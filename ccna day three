@@ -1,0 +1,1076 @@
+CCNA Exam Preparation: Day 3
+
+Switching and Network Access
+Switching is a fundamental technology in modern networks that allows devices to communicate efficiently within a local area network (LAN). Understanding switching concepts and technologies is essential for designing, implementing, and troubleshooting enterprise networks.
+
+Understanding Switching Fundamentals
+Switches operate at Layer 2 (Data Link Layer) of the OSI model and make forwarding decisions based on MAC addresses.
+
+Switch Operation
+Learning: Switches learn MAC addresses by examining the source MAC address of incoming frames and associating them with the port they arrived on.
+Flooding: When a switch receives a frame destined for an unknown MAC address, it floods the frame out all ports except the one it was received on.
+Forwarding: When a switch receives a frame destined for a known MAC address, it forwards the frame only to the port associated with that MAC address.
+Filtering: Switches filter traffic by not forwarding frames between ports when unnecessary, improving network efficiency.
+Aging: MAC address entries in the MAC address table are removed after a period of inactivity (default is 300 seconds on Cisco switches).
+Switching Methods
+Store-and-Forward Switching:
+
+The switch receives the entire frame before forwarding it
+Performs error checking (CRC) on the frame
+Higher latency but better error detection
+Most common method in modern switches
+Cut-Through Switching:
+
+The switch begins forwarding the frame as soon as it reads the destination MAC address
+Lower latency but no error checking
+Two types:
+
+Fast-Forward: Begins forwarding immediately after reading the destination MAC
+Fragment-Free: Waits for the first 64 bytes to check for collision fragments
+Adaptive Switching:
+
+Dynamically switches between store-and-forward and cut-through based on network conditions
+Provides a balance between latency and error detection
+Switch Forwarding Logic
+When a switch receives a frame, it follows this decision-making process:
+
+Read the destination MAC address
+Look up the address in the MAC address table
+If the address is found, forward the frame only to the associated port
+If the address is not found, flood the frame to all ports except the incoming port
+If the destination address is a broadcast (FF:FF:FF:FF:FF:FF) or multicast (starts with 01), flood the frame to all ports except the incoming port
+MAC Address Table
+The MAC address table (also called CAM table) is a critical component of switch operation.
+
+# View the MAC address table
+Switch# show mac address-table
+Switch# show mac address-table dynamic
+Switch# show mac address-table address 00:1A:2B:3C:4D:5E
+Switch# show mac address-table interface GigabitEthernet0/1
+Switch# show mac address-table vlan 10
+
+# Clear the MAC address table
+Switch# clear mac address-table dynamic
+
+# Configure MAC address aging time
+Switch(config)# mac address-table aging-time 600
+
+# Configure a static MAC address entry
+Switch(config)# mac address-table static 00:1A:2B:3C:4D:5E vlan 10 interface GigabitEthernet0/1
+Switch Types
+Fixed Configuration Switches:
+
+Fixed number of ports
+Cannot be expanded
+Examples: Cisco Catalyst 2960, 3560, 3750
+Modular Switches:
+
+Chassis with slots for line cards
+Can be expanded by adding line cards
+Examples: Cisco Catalyst 4500, 6500, 9400
+Stackable Switches:
+
+Multiple switches connected to operate as a single logical switch
+Provides redundancy and scalability
+Examples: Cisco Catalyst 3750, 3850, 9300
+Layer 2 Switches:
+
+Make forwarding decisions based on MAC addresses
+Operate at the Data Link Layer of the OSI model
+Layer 3 Switches:
+
+Combine switching and routing functions
+Make forwarding decisions based on MAC addresses and IP addresses
+Operate at both the Data Link and Network Layers of the OSI model
+Switch Backplane and Forwarding Rates
+Backplane: The internal pathway that connects all ports on a switch
+
+Measured in Gbps (Gigabits per second)
+Determines the maximum amount of data that can be transferred between ports
+Forwarding Rate: The speed at which a switch can process and forward frames
+
+Measured in pps (packets per second)
+Determines how many frames the switch can process simultaneously
+Non-Blocking Architecture: When a switch can forward frames at full wire speed on all ports simultaneously
+
+Requires a backplane capacity equal to or greater than the sum of all port speeds
+Switch Memory Components
+Flash Memory:
+
+Stores the IOS (Internetwork Operating System) image
+Non-volatile (retains data when power is off)
+NVRAM (Non-Volatile RAM):
+
+Stores the startup configuration
+Non-volatile (retains data when power is off)
+RAM (Random Access Memory):
+
+Stores the running configuration
+Volatile (loses data when power is off)
+Also stores the MAC address table, ARP table, and routing table
+ROM (Read-Only Memory):
+
+Stores the bootstrap program and basic diagnostic software
+Non-volatile (retains data when power is off)
+Switch Boot Process
+POST (Power-On Self Test):
+
+Tests hardware components
+Verifies basic system functionality
+Bootstrap Program:
+
+Initializes the CPU
+Loads the IOS from flash memory
+IOS Loading:
+
+IOS is loaded into RAM
+System initializes
+Configuration Loading:
+
+Startup configuration is loaded from NVRAM
+If no startup configuration exists, the switch enters setup mode
+Switch Physical Interface Configuration
+Properly configuring switch interfaces is essential for network connectivity and performance.
+
+Basic Interface Configuration
+# Enter global configuration mode
+Switch> enable
+Switch# configure terminal
+
+# Configure a single interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# description Connection to Server1
+Switch(config-if)# speed 1000
+Switch(config-if)# duplex full
+Switch(config-if)# no shutdown
+Switch(config-if)# exit
+
+# Configure multiple interfaces simultaneously
+Switch(config)# interface range GigabitEthernet0/1-24
+Switch(config-if-range)# description User Access Ports
+Switch(config-if-range)# speed auto
+Switch(config-if-range)# duplex auto
+Switch(config-if-range)# no shutdown
+Switch(config-if-range)# exit
+Interface Speed and Duplex
+Speed Options:
+
+auto: Automatically negotiates the speed (default)
+10: Forces 10 Mbps
+100: Forces 100 Mbps
+1000: Forces 1000 Mbps (1 Gbps)
+10000: Forces 10000 Mbps (10 Gbps)
+Duplex Options:
+
+auto: Automatically negotiates the duplex mode (default)
+half: Forces half-duplex mode (can send or receive, but not simultaneously)
+full: Forces full-duplex mode (can send and receive simultaneously)
+# Configure speed and duplex
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# speed 1000
+Switch(config-if)# duplex full
+
+# View interface speed and duplex settings
+Switch# show interfaces GigabitEthernet0/1
+Switch# show interfaces GigabitEthernet0/1 | include duplex
+Switch# show interfaces status
+Auto-MDIX
+Auto-MDIX (Automatic Medium-Dependent Interface Crossover) allows the switch to automatically detect the required cable connection type (straight-through or crossover) and configure the interface accordingly.
+
+# Enable Auto-MDIX
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# mdix auto
+
+# View Auto-MDIX status
+Switch# show controllers ethernet-controller GigabitEthernet0/1 phy | include MDIX
+Interface Error Conditions
+err-disabled: An interface can enter the err-disabled state for various reasons, including:
+
+Port security violations
+BPDU guard violations
+UDLD (UniDirectional Link Detection) failures
+Storm control violations
+Link-flap detection
+# View err-disabled interfaces
+Switch# show interfaces status err-disabled
+Switch# show errdisable recovery
+
+# Configure automatic recovery from err-disabled state
+Switch(config)# errdisable recovery cause all
+Switch(config)# errdisable recovery interval 300  # 300 seconds
+Power over Ethernet (PoE)
+PoE allows switches to provide power to connected devices (like IP phones, wireless access points, and cameras) over the same Ethernet cable that carries data.
+
+PoE Standards:
+
+IEEE 802.3af (PoE): Up to 15.4W per port
+IEEE 802.3at (PoE+): Up to 30W per port
+IEEE 802.3bt (PoE++): Up to 60W (Type 3) or 100W (Type 4) per port
+# Configure PoE on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# power inline auto  # Enable PoE (default)
+Switch(config-if)# power inline never  # Disable PoE
+Switch(config-if)# power inline consumption 10000  # Limit power to 10W
+
+# View PoE status
+Switch# show power inline
+Switch# show power inline GigabitEthernet0/1
+Switch# show power inline consumption
+Interface Monitoring and Troubleshooting
+# View interface status
+Switch# show interfaces status
+Switch# show interfaces GigabitEthernet0/1 status
+
+# View interface counters
+Switch# show interfaces GigabitEthernet0/1
+Switch# show interfaces GigabitEthernet0/1 counters
+Switch# show interfaces GigabitEthernet0/1 counters errors
+
+# Clear interface counters
+Switch# clear counters GigabitEthernet0/1
+
+# View interface configuration
+Switch# show running-config interface GigabitEthernet0/1
+
+# Test cable diagnostics
+Switch# test cable-diagnostics tdr interface GigabitEthernet0/1
+Switch# show cable-diagnostics tdr interface GigabitEthernet0/1
+Understanding VLANs
+Virtual LANs (VLANs) are logical divisions of a physical network that allow you to segment traffic and create separate broadcast domains.
+
+VLAN Concepts
+Broadcast Domain: A group of devices that receive broadcast frames sent by any member of the group.
+
+Each VLAN creates a separate broadcast domain
+Broadcasts are contained within a VLAN
+Benefits of VLANs:
+
+Improved Security: Traffic is separated between VLANs
+Reduced Broadcast Traffic: Broadcasts are contained within a VLAN
+Improved Performance: Less unnecessary traffic on the network
+Logical Grouping: Devices can be grouped by function, department, or application
+Simplified Management: Changes can be made at the switch level without physical recabling
+VLAN Types:
+
+Data VLAN: Used for user-generated traffic
+Voice VLAN: Used for voice traffic (IP phones)
+Management VLAN: Used for switch management traffic
+Native VLAN: Untagged VLAN on a trunk port (default is VLAN 1)
+VLAN Ranges:
+
+Normal VLANs: 1-1005
+
+VLAN 1 is the default VLAN (cannot be deleted or renamed)
+VLANs 1002-1005 are reserved for Token Ring and FDDI
+Extended VLANs: 1006-4094 (requires VTP transparent mode or VTP version 3)
+VLAN Configuration
+# Create a VLAN
+Switch(config)# vlan 10
+Switch(config-vlan)# name Engineering
+Switch(config-vlan)# exit
+
+Switch(config)# vlan 20
+Switch(config-vlan)# name Marketing
+Switch(config-vlan)# exit
+
+# Configure an access port (single VLAN)
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10
+Switch(config-if)# exit
+
+# Configure a voice VLAN
+Switch(config)# interface GigabitEthernet0/2
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10
+Switch(config-if)# switchport voice vlan 100
+Switch(config-if)# exit
+
+# View VLAN information
+Switch# show vlan
+Switch# show vlan brief
+Switch# show vlan id 10
+Switch# show vlan name Engineering
+
+# View port VLAN assignment
+Switch# show interfaces GigabitEthernet0/1 switchport
+VLAN Trunking
+VLAN trunking allows multiple VLANs to traverse a single physical link between switches.
+
+Trunk Protocols:
+
+IEEE 802.1Q: Industry standard trunking protocol
+
+Adds a 4-byte tag to the Ethernet frame
+Supports up to 4094 VLANs
+ISL (Inter-Switch Link): Cisco proprietary trunking protocol (legacy)
+
+Encapsulates the entire Ethernet frame
+Supports up to 1000 VLANs
+Native VLAN:
+
+Frames from the native VLAN are not tagged on an 802.1Q trunk
+Default native VLAN is VLAN 1
+Security best practice: Change the native VLAN to an unused VLAN
+# Configure a trunk port
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport mode trunk
+Switch(config-if)# switchport trunk encapsulation dot1q  # Only needed on some switches
+Switch(config-if)# switchport trunk allowed vlan all
+Switch(config-if)# switchport trunk native vlan 999
+Switch(config-if)# exit
+
+# Configure a trunk port with specific VLANs
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport mode trunk
+Switch(config-if)# switchport trunk allowed vlan 10,20,30,100
+Switch(config-if)# exit
+
+# Add VLANs to an existing trunk
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport trunk allowed vlan add 40,50
+Switch(config-if)# exit
+
+# Remove VLANs from an existing trunk
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport trunk allowed vlan remove 30
+Switch(config-if)# exit
+
+# View trunk information
+Switch# show interfaces trunk
+Switch# show interfaces GigabitEthernet0/24 trunk
+Switch# show interfaces GigabitEthernet0/24 switchport
+Dynamic Trunking Protocol (DTP)
+DTP is a Cisco proprietary protocol that allows switches to dynamically negotiate trunk links.
+
+DTP Modes:
+
+dynamic auto: Forms a trunk if the other side is set to trunk or dynamic desirable (default on many switches)
+dynamic desirable: Actively attempts to form a trunk with the other side
+trunk: Forces the port to be a trunk regardless of the other side
+access: Forces the port to be an access port regardless of the other side
+nonegotiate: Disables DTP negotiation (port must be manually configured as trunk or access)
+# Configure DTP mode
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport mode dynamic desirable
+Switch(config-if)# exit
+
+# Disable DTP negotiation
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport mode trunk
+Switch(config-if)# switchport nonegotiate
+Switch(config-if)# exit
+
+# View DTP status
+Switch# show dtp
+Switch# show dtp interface GigabitEthernet0/24
+VLAN Trunking Protocol (VTP)
+VTP is a Cisco proprietary protocol that allows switches to share VLAN configuration information.
+
+VTP Modes:
+
+Server: Can create, modify, and delete VLANs; advertises VTP information
+Client: Cannot create, modify, or delete VLANs; synchronizes with VTP information
+Transparent: Can create, modify, and delete local VLANs; forwards VTP advertisements but does not synchronize
+Off (VTP version 3 only): Does not participate in VTP
+VTP Versions:
+
+Version 1: Original version
+Version 2: Adds support for Token Ring VLANs
+Version 3: Adds support for extended VLANs and private VLANs
+# Configure VTP
+Switch(config)# vtp domain CCNA
+Switch(config)# vtp mode server
+Switch(config)# vtp password cisco
+Switch(config)# vtp version 2
+
+# View VTP information
+Switch# show vtp status
+Switch# show vtp password
+Inter-VLAN Routing
+Inter-VLAN routing allows devices in different VLANs to communicate with each other.
+
+Router-on-a-Stick:
+
+Uses a single physical interface on a router
+Creates subinterfaces for each VLAN
+Requires a trunk link between the switch and router
+# Configure router-on-a-stick
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# no shutdown
+Router(config-if)# exit
+
+Router(config)# interface GigabitEthernet0/0.10
+Router(config-subif)# encapsulation dot1q 10
+Router(config-subif)# ip address 192.168.10.1 255.255.255.0
+Router(config-subif)# exit
+
+Router(config)# interface GigabitEthernet0/0.20
+Router(config-subif)# encapsulation dot1q 20
+Router(config-subif)# ip address 192.168.20.1 255.255.255.0
+Router(config-subif)# exit
+Layer 3 Switch:
+
+Uses switched virtual interfaces (SVIs) or routed ports
+More efficient than router-on-a-stick
+No external router required
+# Configure SVIs on a Layer 3 switch
+Switch(config)# ip routing
+Switch(config)# interface Vlan10
+Switch(config-if)# ip address 192.168.10.1 255.255.255.0
+Switch(config-if)# no shutdown
+Switch(config-if)# exit
+
+Switch(config)# interface Vlan20
+Switch(config-if)# ip address 192.168.20.1 255.255.255.0
+Switch(config-if)# no shutdown
+Switch(config-if)# exit
+
+# Configure a routed port on a Layer 3 switch
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# no switchport
+Switch(config-if)# ip address 192.168.30.1 255.255.255.0
+Switch(config-if)# no shutdown
+Switch(config-if)# exit
+Private VLANs
+Private VLANs (PVLANs) provide Layer 2 isolation between ports within the same VLAN.
+
+PVLAN Types:
+
+Primary VLAN: The main VLAN that contains all the ports in the private VLAN domain
+Secondary VLANs:
+
+Isolated VLAN: Ports in this VLAN can communicate only with promiscuous ports
+Community VLAN: Ports in this VLAN can communicate with each other and with promiscuous ports
+PVLAN Port Types:
+
+Promiscuous: Can communicate with all ports in the private VLAN domain
+Isolated: Can communicate only with promiscuous ports
+Community: Can communicate with other ports in the same community and with promiscuous ports
+# Configure private VLANs
+Switch(config)# vlan 100
+Switch(config-vlan)# private-vlan primary
+Switch(config-vlan)# exit
+
+Switch(config)# vlan 101
+Switch(config-vlan)# private-vlan isolated
+Switch(config-vlan)# exit
+
+Switch(config)# vlan 102
+Switch(config-vlan)# private-vlan community
+Switch(config-vlan)# exit
+
+# Associate secondary VLANs with the primary VLAN
+Switch(config)# vlan 100
+Switch(config-vlan)# private-vlan association 101,102
+Switch(config-vlan)# exit
+
+# Configure private VLAN ports
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# switchport mode private-vlan host
+Switch(config-if)# switchport private-vlan host-association 100 101
+Switch(config-if)# exit
+
+Switch(config)# interface GigabitEthernet0/2
+Switch(config-if)# switchport mode private-vlan host
+Switch(config-if)# switchport private-vlan host-association 100 102
+Switch(config-if)# exit
+
+Switch(config)# interface GigabitEthernet0/3
+Switch(config-if)# switchport mode private-vlan promiscuous
+Switch(config-if)# switchport private-vlan mapping 100 101,102
+Switch(config-if)# exit
+Common VLAN and Trunk Problems
+Understanding common VLAN and trunk issues is essential for troubleshooting network connectivity problems.
+
+VLAN Configuration Issues
+VLAN Does Not Exist:
+
+Symptoms: Devices cannot communicate within a VLAN
+Troubleshooting:
+
+# Verify VLAN exists
+Switch# show vlan brief
+
+# Create the VLAN if it doesn't exist
+Switch(config)# vlan 10
+Switch(config-vlan)# name Engineering
+Port Not Assigned to the Correct VLAN:
+
+Symptoms: Device cannot communicate with others in the same VLAN
+Troubleshooting:
+
+# Verify port VLAN assignment
+Switch# show interfaces GigabitEthernet0/1 switchport
+
+# Correct the VLAN assignment
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# switchport access vlan 10
+VLAN Not Active:
+
+Symptoms: VLAN exists but is not operational
+Troubleshooting:
+
+# Verify VLAN status
+Switch# show vlan brief
+
+# If VLAN is suspended, reactivate it
+Switch(config)# vlan 10
+Switch(config-vlan)# state active
+VTP Issues:
+
+Symptoms: VLANs not propagating to all switches
+Troubleshooting:
+
+# Verify VTP status
+Switch# show vtp status
+
+# Ensure VTP domain, password, and version match on all switches
+Switch(config)# vtp domain CCNA
+Switch(config)# vtp password cisco
+Switch(config)# vtp version 2
+Trunk Configuration Issues
+Trunk Mode Mismatch:
+
+Symptoms: Trunk link not forming or only carrying native VLAN traffic
+Troubleshooting:
+
+# Verify trunk status
+Switch# show interfaces trunk
+Switch# show interfaces GigabitEthernet0/24 switchport
+
+# Correct trunk mode
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport mode trunk
+Allowed VLANs Mismatch:
+
+Symptoms: Some VLANs not traversing the trunk
+Troubleshooting:
+
+# Verify allowed VLANs on the trunk
+Switch# show interfaces trunk
+
+# Correct allowed VLANs
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport trunk allowed vlan all
+# Or add specific VLANs
+Switch(config-if)# switchport trunk allowed vlan add 10,20,30
+Native VLAN Mismatch:
+
+Symptoms: Native VLAN traffic not passing or security warnings
+Troubleshooting:
+
+# Verify native VLAN
+Switch# show interfaces trunk
+
+# Correct native VLAN
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport trunk native vlan 999
+Encapsulation Mismatch:
+
+Symptoms: Trunk link not forming
+Troubleshooting:
+
+# Verify encapsulation
+Switch# show interfaces trunk
+
+# Correct encapsulation
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport trunk encapsulation dot1q
+DTP Issues:
+
+Symptoms: Trunk link not forming automatically
+Troubleshooting:
+
+# Verify DTP status
+Switch# show dtp interface GigabitEthernet0/24
+
+# Correct DTP mode or disable DTP
+Switch(config)# interface GigabitEthernet0/24
+Switch(config-if)# switchport mode trunk
+Switch(config-if)# switchport nonegotiate
+Inter-VLAN Routing Issues
+Missing or Incorrect Subinterface Configuration:
+
+Symptoms: Devices in different VLANs cannot communicate
+Troubleshooting:
+
+# Verify subinterface configuration
+Router# show ip interface brief
+Router# show running-config interface GigabitEthernet0/0.10
+
+# Correct subinterface configuration
+Router(config)# interface GigabitEthernet0/0.10
+Router(config-subif)# encapsulation dot1q 10
+Router(config-subif)# ip address 192.168.10.1 255.255.255.0
+SVI Issues on Layer 3 Switches:
+
+Symptoms: Inter-VLAN routing not working on a Layer 3 switch
+Troubleshooting:
+
+# Verify SVI configuration
+Switch# show ip interface brief
+Switch# show running-config interface Vlan10
+
+# Ensure IP routing is enabled
+Switch# show running-config | include ip routing
+
+# Enable IP routing if not enabled
+Switch(config)# ip routing
+
+# Correct SVI configuration
+Switch(config)# interface Vlan10
+Switch(config-if)# ip address 192.168.10.1 255.255.255.0
+Switch(config-if)# no shutdown
+Troubleshooting Commands
+# Verify VLAN configuration
+Switch# show vlan brief
+Switch# show vlan id 10
+Switch# show interfaces GigabitEthernet0/1 switchport
+
+# Verify trunk configuration
+Switch# show interfaces trunk
+Switch# show interfaces GigabitEthernet0/24 switchport
+Switch# show interfaces GigabitEthernet0/24 trunk
+
+# Verify VTP configuration
+Switch# show vtp status
+Switch# show vtp password
+
+# Verify inter-VLAN routing
+Router# show ip interface brief
+Router# show running-config interface GigabitEthernet0/0.10
+Switch# show ip route
+CDP and LLDP
+Cisco Discovery Protocol (CDP) and Link Layer Discovery Protocol (LLDP) are network discovery protocols that allow devices to learn about directly connected neighbors.
+
+Cisco Discovery Protocol (CDP)
+CDP is a Cisco proprietary protocol that operates at Layer 2 and allows Cisco devices to share information about themselves with directly connected Cisco devices.
+
+Information Shared by CDP:
+
+Device ID (hostname)
+Platform (hardware model)
+Capabilities (router, switch, etc.)
+IOS version
+IP address
+Interface information
+CDP Configuration:
+# Enable CDP globally (default)
+Switch(config)# cdp run
+
+# Disable CDP globally
+Switch(config)# no cdp run
+
+# Enable CDP on an interface (default)
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# cdp enable
+
+# Disable CDP on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# no cdp enable
+
+# Configure CDP timer (how often CDP updates are sent)
+Switch(config)# cdp timer 60  # 60 seconds (default)
+
+# Configure CDP holdtime (how long CDP information is kept)
+Switch(config)# cdp holdtime 180  # 180 seconds (default)
+CDP Verification and Troubleshooting:
+# View CDP neighbors
+Switch# show cdp neighbors
+Switch# show cdp neighbors detail
+Switch# show cdp neighbors interface GigabitEthernet0/1
+Switch# show cdp neighbors interface GigabitEthernet0/1 detail
+
+# View CDP configuration
+Switch# show cdp
+Switch# show cdp interface
+Switch# show cdp interface GigabitEthernet0/1
+
+# View CDP traffic statistics
+Switch# show cdp traffic
+
+# Clear CDP table
+Switch# clear cdp table
+Link Layer Discovery Protocol (LLDP)
+LLDP is an IEEE standard protocol (802.1AB) that operates at Layer 2 and allows devices from different vendors to share information about themselves with directly connected devices.
+
+Information Shared by LLDP:
+
+Device ID (chassis ID)
+Port ID
+System name
+System description
+System capabilities
+Management address
+LLDP Configuration:
+# Enable LLDP globally
+Switch(config)# lldp run
+
+# Disable LLDP globally
+Switch(config)# no lldp run
+
+# Enable LLDP transmit on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# lldp transmit
+
+# Disable LLDP transmit on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# no lldp transmit
+
+# Enable LLDP receive on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# lldp receive
+
+# Disable LLDP receive on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# no lldp receive
+
+# Configure LLDP timer (how often LLDP updates are sent)
+Switch(config)# lldp timer 30  # 30 seconds (default)
+
+# Configure LLDP holdtime (how long LLDP information is kept)
+Switch(config)# lldp holdtime 120  # 120 seconds (default)
+LLDP Verification and Troubleshooting:
+# View LLDP neighbors
+Switch# show lldp neighbors
+Switch# show lldp neighbors detail
+Switch# show lldp neighbors interface GigabitEthernet0/1
+Switch# show lldp neighbors interface GigabitEthernet0/1 detail
+
+# View LLDP configuration
+Switch# show lldp
+Switch# show lldp interface
+Switch# show lldp interface GigabitEthernet0/1
+
+# View LLDP traffic statistics
+Switch# show lldp traffic
+
+# Clear LLDP table
+Switch# clear lldp table
+CDP and LLDP Security Considerations
+Both CDP and LLDP can pose security risks by revealing information about your network to potential attackers.
+
+Security Best Practices:
+
+Disable CDP and LLDP on interfaces connected to untrusted networks
+Disable CDP and LLDP on interfaces where they are not needed
+Use access control lists (ACLs) to restrict CDP and LLDP traffic
+# Disable CDP on interfaces connected to untrusted networks
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# no cdp enable
+
+# Disable LLDP on interfaces connected to untrusted networks
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# no lldp transmit
+Switch(config-if)# no lldp receive
+Understanding STP
+Spanning Tree Protocol (STP) is a Layer 2 protocol that prevents loops in switched networks by creating a loop-free logical topology.
+
+STP Fundamentals
+Purpose of STP:
+
+Prevents Layer 2 loops
+Provides redundancy in case of link or switch failure
+Ensures a single active path between any two devices
+STP Operation:
+
+Elects a root bridge
+Determines the root port on each non-root bridge
+Determines the designated port on each segment
+Blocks redundant paths to prevent loops
+STP Port States:
+
+Blocking: Does not forward frames; listens for BPDUs
+Listening: Transitional state; does not forward frames
+Learning: Transitional state; builds MAC address table but does not forward frames
+Forwarding: Forwards frames
+Disabled: Administratively shut down
+STP Timers:
+
+Hello Time: How often the root bridge sends BPDUs (2 seconds by default)
+Forward Delay: How long ports stay in the listening and learning states (15 seconds by default)
+Max Age: How long a BPDU is considered valid (20 seconds by default)
+STP Variants
+IEEE 802.1D (STP):
+
+Original Spanning Tree Protocol
+Slow convergence (30-50 seconds)
+IEEE 802.1w (RSTP - Rapid STP):
+
+Faster convergence (1-5 seconds)
+Backward compatible with 802.1D
+Simplified port states: Discarding, Learning, Forwarding
+IEEE 802.1s (MSTP - Multiple STP):
+
+Allows multiple spanning tree instances
+Maps multiple VLANs to a single spanning tree instance
+Reduces CPU and bandwidth usage
+Cisco PVST+ (Per-VLAN Spanning Tree Plus):
+
+Cisco proprietary
+Runs a separate STP instance for each VLAN
+Based on 802.1D
+Cisco Rapid PVST+:
+
+Cisco proprietary
+Runs a separate RSTP instance for each VLAN
+Based on 802.1w
+STP Configuration
+# Configure the STP mode
+Switch(config)# spanning-tree mode pvst        # Per-VLAN Spanning Tree (default)
+Switch(config)# spanning-tree mode rapid-pvst  # Rapid Per-VLAN Spanning Tree
+Switch(config)# spanning-tree mode mst         # Multiple Spanning Tree
+
+# Configure bridge priority
+Switch(config)# spanning-tree vlan 1 priority 4096  # Lower value increases likelihood of becoming root
+# Or use the macro command
+Switch(config)# spanning-tree vlan 1 root primary   # Sets priority to 24576 or 4096 less than current root
+Switch(config)# spanning-tree vlan 1 root secondary # Sets priority to 28672
+
+# Configure port cost
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# spanning-tree cost 100  # Lower value is preferred
+
+# Configure port priority
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# spanning-tree port-priority 64  # Lower value is preferred
+
+# Configure STP timers (should only be changed on the root bridge)
+Switch(config)# spanning-tree vlan 1 hello-time 1
+Switch(config)# spanning-tree vlan 1 forward-time 10
+Switch(config)# spanning-tree vlan 1 max-age 15
+STP Enhancements
+PortFast:
+
+Allows a port to transition directly to forwarding state
+Should only be used on access ports connected to end devices
+Can cause loops if connected to another switch
+# Enable PortFast on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# spanning-tree portfast
+
+# Enable PortFast globally on all access ports
+Switch(config)# spanning-tree portfast default
+BPDU Guard:
+
+Disables a port if a BPDU is received
+Protects against unauthorized switches
+Typically used with PortFast
+# Enable BPDU Guard on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# spanning-tree bpduguard enable
+
+# Enable BPDU Guard globally on all PortFast-enabled ports
+Switch(config)# spanning-tree portfast bpduguard default
+BPDU Filter:
+
+Prevents sending or receiving BPDUs on a port
+Can cause loops if not used carefully
+# Enable BPDU Filter on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# spanning-tree bpdufilter enable
+
+# Enable BPDU Filter globally on all PortFast-enabled ports
+Switch(config)# spanning-tree portfast bpdufilter default
+Root Guard:
+
+Prevents a port from becoming a root port
+Protects the root bridge placement
+# Enable Root Guard on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# spanning-tree guard root
+Loop Guard:
+
+Prevents loops caused by unidirectional links
+Puts the port in loop-inconsistent state if BPDUs are not received
+# Enable Loop Guard on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# spanning-tree guard loop
+
+# Enable Loop Guard globally
+Switch(config)# spanning-tree loopguard default
+UDLD (UniDirectional Link Detection):
+
+Detects unidirectional links
+Complements Loop Guard
+# Enable UDLD globally
+Switch(config)# udld enable
+
+# Enable aggressive mode UDLD on an interface
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# udld aggressive
+STP Verification and Troubleshooting
+# View STP status
+Switch# show spanning-tree
+Switch# show spanning-tree vlan 1
+Switch# show spanning-tree interface GigabitEthernet0/1
+Switch# show spanning-tree interface GigabitEthernet0/1 detail
+
+# View STP configuration
+Switch# show running-config | include spanning-tree
+
+# View STP statistics
+Switch# show spanning-tree counters
+
+# View STP inconsistencies
+Switch# show spanning-tree inconsistentports
+
+# Debug STP
+Switch# debug spanning-tree events
+Switch# debug spanning-tree bpdu
+Common STP Issues
+Unidirectional Links:
+
+Symptoms: Loops despite STP being enabled
+Solution: Enable UDLD and Loop Guard
+Incorrect Root Bridge:
+
+Symptoms: Suboptimal traffic flow
+Solution: Configure bridge priority or use root guard
+STP Convergence Issues:
+
+Symptoms: Slow recovery from topology changes
+Solution: Use RSTP or configure timers (carefully)
+PortFast on Switch Ports:
+
+Symptoms: Temporary loops during topology changes
+Solution: Only enable PortFast on ports connected to end devices
+Inconsistent VLAN Configuration:
+
+Symptoms: STP not working correctly for some VLANs
+Solution: Ensure consistent VLAN configuration across all switches
+Understanding EtherChannel
+EtherChannel is a technology that allows multiple physical links to be bundled into a single logical link, providing increased bandwidth and redundancy.
+
+EtherChannel Fundamentals
+Purpose of EtherChannel:
+
+Increases bandwidth by bundling multiple links
+Provides redundancy (if one link fails, others continue to function)
+Simplifies STP (treats multiple links as a single link)
+EtherChannel Limitations:
+
+Up to 8 physical links per EtherChannel
+All ports must have the same speed, duplex, and VLAN configuration
+All ports must be the same type (e.g., all FastEthernet or all GigabitEthernet)
+Load Balancing:
+
+Traffic is distributed across the physical links based on a hash algorithm
+Load balancing methods include:
+
+Source MAC address
+Destination MAC address
+Source and destination MAC address
+Source IP address
+Destination IP address
+Source and destination IP address
+TCP/UDP port numbers
+EtherChannel Protocols
+PAgP (Port Aggregation Protocol):
+
+Cisco proprietary
+Modes:
+
+auto: Passive mode (responds to PAgP packets but does not initiate)
+desirable: Active mode (initiates PAgP negotiation)
+LACP (Link Aggregation Control Protocol):
+
+IEEE 802.3ad standard
+Modes:
+
+passive: Passive mode (responds to LACP packets but does not initiate)
+active: Active mode (initiates LACP negotiation)
+Static EtherChannel:
+
+No negotiation protocol
+Manually configured on both ends
+Mode: on
+EtherChannel Configuration
+# Configure a PAgP EtherChannel
+Switch(config)# interface range GigabitEthernet0/1-2
+Switch(config-if-range)# channel-group 1 mode desirable
+Switch(config-if-range)# exit
+
+# Configure an LACP EtherChannel
+Switch(config)# interface range GigabitEthernet0/3-4
+Switch(config-if-range)# channel-group 2 mode active
+Switch(config-if-range)# exit
+
+# Configure a static EtherChannel
+Switch(config)# interface range GigabitEthernet0/5-6
+Switch(config-if-range)# channel-group 3 mode on
+Switch(config-if-range)# exit
+
+# Configure the port-channel interface
+Switch(config)# interface port-channel 1
+Switch(config-if)# switchport mode trunk
+Switch(config-if)# exit
+
+# Configure load balancing
+Switch(config)# port-channel load-balance src-dst-ip  # Source and destination IP address
+Layer 3 EtherChannel
+A Layer 3 EtherChannel is used for routed ports on Layer 3 switches.
+
+# Configure a Layer 3 EtherChannel
+Switch(config)# interface range GigabitEthernet0/1-2
+Switch(config-if-range)# no switchport
+Switch(config-if-range)# channel-group 1 mode active
+Switch(config-if-range)# exit
+
+Switch(config)# interface port-channel 1
+Switch(config-if)# no switchport
+Switch(config-if)# ip address 192.168.1.1 255.255.255.0
+Switch(config-if)# exit
+EtherChannel Verification and Troubleshooting
+# View EtherChannel summary
+Switch# show etherchannel summary
+
+# View detailed EtherChannel information
+Switch# show etherchannel detail
+
+# View EtherChannel port information
+Switch# show etherchannel port
+
+# View EtherChannel load balancing
+Switch# show etherchannel load-balance
+
+# View EtherChannel protocol information
+Switch# show etherchannel protocol
+
+# Debug EtherChannel
+Switch# debug etherchannel
+Common EtherChannel Issues
+Configuration Mismatch:
+
+Symptoms: EtherChannel not forming
+Solution: Ensure consistent configuration on both ends
+Protocol Mismatch:
+
+Symptoms: EtherChannel not forming
+Solution: Use the same protocol (PAgP, LACP, or static) on both ends
+Mode Mismatch:
+
+Symptoms: EtherChannel not forming
+Solution: Ensure compatible modes on both ends
+
+PAgP: auto-desirable or desirable-desirable
+LACP: passive-active or active-active
+Static: on-on
+Port Configuration Mismatch:
+
+Symptoms: Some ports not joining the EtherChannel
+Solution: Ensure all ports have the same speed, duplex, VLAN, and other settings
+Exceeding Maximum Links:
+
+Symptoms: Some ports not joining the EtherChannel
+Solution: Limit the number of ports to 8 per EtherChannel
+Conclusion
+This comprehensive guide covers the essential topics for Week 3 of CCNA exam preparation, focusing on switching and network access. Understanding switching fundamentals, switch interface configuration, VLANs, troubleshooting VLAN and trunk issues, CDP and LLDP, Spanning Tree Protocol (STP), and EtherChannel is crucial for success in the CCNA exam and in real-world networking scenarios.
+
+Remember to practice the commands and configurations provided in this guide. Hands-on experience is invaluable for mastering networking concepts and troubleshooting skills.
+
+As you continue your CCNA preparation, focus on understanding the underlying principles rather than just memorizing commands. This approach will help you adapt to different scenarios and solve complex networking problems.
+
+Good luck with your CCNA exam preparation!
+
