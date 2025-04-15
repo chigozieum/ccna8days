@@ -230,7 +230,6 @@ R1# show ip interface brief
 
 # Show routing table
 R1# show ip route
-```
 
 ### Switches
 
