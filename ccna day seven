@@ -1,0 +1,1511 @@
+# CCNA Exam Preparation: Day 7
+
+## Security Fundamentals
+
+Network security is a critical aspect of modern networking, protecting data, resources, and infrastructure from unauthorized access and attacks.
+
+### Security Principles
+
+1. **CIA Triad**:
+
+1. **Confidentiality**: Ensuring information is accessible only to authorized individuals
+2. **Integrity**: Maintaining accuracy and consistency of data
+3. **Availability**: Ensuring systems and data are accessible when needed
+
+
+
+2. **Defense in Depth**:
+
+1. Multiple layers of security controls
+2. No single point of failure
+3. Comprehensive protection strategy
+
+
+
+3. **Least Privilege**:
+
+1. Users and systems granted minimum access necessary
+2. Reduces attack surface and potential damage
+
+
+
+4. **Security Policies**:
+
+1. Formal documentation of security requirements
+2. Guidelines for acceptable use
+3. Incident response procedures
+4. Compliance requirements
+
+
+
+
+
+### Security Terminology
+
+1. **Vulnerability**: Weakness that can be exploited
+2. **Threat**: Potential danger to assets
+3. **Risk**: Likelihood and impact of a threat exploiting a vulnerability
+4. **Exploit**: Method of leveraging a vulnerability
+5. **Mitigation**: Actions to reduce risk
+6. **Attack Vector**: Path or means by which an attacker gains access
+7. **Attack Surface**: Sum of all possible attack vectors
+
+
+### Security Frameworks
+
+1. **NIST Cybersecurity Framework**:
+
+1. **Identify**: Understand systems, assets, data, and risks
+2. **Protect**: Implement safeguards to ensure delivery of services
+3. **Detect**: Identify security events
+4. **Respond**: Take action regarding detected events
+5. **Recover**: Restore capabilities impaired by security incidents
+
+
+
+2. **ISO/IEC 27001**:
+
+1. International standard for information security management
+2. Provides a systematic approach to managing sensitive information
+
+
+
+3. **CIS Controls**:
+
+1. Prioritized set of actions to protect organizations
+2. Focused on high-impact security practices
+
+
+
+
+
+### Security Assessment
+
+1. **Vulnerability Assessment**:
+
+1. Systematic review of security weaknesses
+2. Identifies and prioritizes vulnerabilities
+3. Does not exploit vulnerabilities
+
+
+
+2. **Penetration Testing**:
+
+1. Simulated attack to identify vulnerabilities
+2. Attempts to exploit vulnerabilities
+3. Provides realistic assessment of security posture
+
+
+
+3. **Security Auditing**:
+
+1. Systematic evaluation of security controls
+2. Verifies compliance with policies and standards
+3. Identifies gaps in security implementation
+
+
+
+
+
+## Common Threats
+
+Understanding common network threats is essential for implementing effective security controls.
+
+### Malware
+
+1. **Virus**:
+
+1. Self-replicating malicious code
+2. Requires host program to spread
+3. Often damages or corrupts data
+
+
+
+2. **Worm**:
+
+1. Self-replicating malicious code
+2. Spreads independently without host program
+3. Often consumes network bandwidth
+
+
+
+3. **Trojan Horse**:
+
+1. Disguised as legitimate software
+2. Performs malicious actions while appearing benign
+3. Often used to establish backdoor access
+
+
+
+4. **Ransomware**:
+
+1. Encrypts victim's data
+2. Demands payment for decryption key
+3. Often spreads through phishing or exploits
+
+
+
+5. **Spyware**:
+
+1. Collects information without consent
+2. Monitors user activities
+3. Often used for identity theft or financial fraud
+
+
+
+6. **Rootkit**:
+
+1. Provides privileged access while hiding its presence
+2. Difficult to detect and remove
+3. Often modifies operating system components
+
+
+
+
+
+### Network Attacks
+
+1. **Denial of Service (DoS)**:
+
+1. Overwhelms resources to prevent legitimate access
+2. Types include:
+
+1. **Flood Attacks**: SYN flood, UDP flood, ICMP flood
+2. **Amplification Attacks**: DNS, NTP, SSDP reflection
+3. **Application Layer Attacks**: HTTP flood, Slowloris
+
+
+
+
+
+
+2. **Distributed Denial of Service (DDoS)**:
+
+1. DoS attack from multiple sources
+2. Often uses botnets
+3. More difficult to mitigate than single-source DoS
+
+
+
+3. **Man-in-the-Middle (MitM)**:
+
+1. Attacker intercepts communication between parties
+2. Can eavesdrop, modify, or inject data
+3. Examples include:
+
+1. **ARP Poisoning**: Manipulates ARP tables
+2. **DNS Spoofing**: Redirects to malicious sites
+3. **SSL Stripping**: Downgrades HTTPS to HTTP
+
+
+
+
+
+
+4. **Replay Attack**:
+
+1. Captures and retransmits valid data
+2. Used to gain unauthorized access or duplicate transactions
+3. Mitigated with timestamps, nonces, or session tokens
+
+
+
+5. **Brute Force Attack**:
+
+1. Attempts all possible combinations to find credentials
+2. Can be mitigated with account lockouts and strong passwords
+3. Variants include dictionary attacks and rainbow tables
+
+
+
+6. **Social Engineering**:
+
+1. Manipulates people to divulge information or perform actions
+2. Types include:
+
+1. **Phishing**: Fraudulent emails or websites
+2. **Pretexting**: Creating a fabricated scenario
+3. **Baiting**: Offering something enticing to entrap victim
+4. **Tailgating**: Following someone into a secure area
+
+
+
+
+
+
+
+
+### Layer 2 Attacks
+
+1. **MAC Flooding**:
+
+1. Overwhelms switch MAC address table
+2. Forces switch to act like a hub, broadcasting all traffic
+3. Allows attacker to capture traffic not intended for them
+
+
+
+2. **VLAN Hopping**:
+
+1. Gains access to traffic on other VLANs
+2. Methods include:
+
+1. **Switch Spoofing**: Attacker's device acts as a switch
+2. **Double Tagging**: Exploits native VLAN behavior
+
+
+
+
+
+
+3. **Spanning Tree Attacks**:
+
+1. Manipulates STP to become root bridge
+2. Allows traffic interception or DoS
+3. Exploits lack of authentication in STP
+
+
+
+4. **DHCP Attacks**:
+
+1. **DHCP Starvation**: Exhausts DHCP address pool
+2. **DHCP Spoofing**: Rogue DHCP server provides malicious configuration
+3. Can redirect traffic or cause DoS
+
+
+
+5. **ARP Poisoning**:
+
+1. Sends fake ARP messages
+2. Associates attacker's MAC with legitimate IP addresses
+3. Enables MitM attacks
+
+
+
+
+
+### Threat Mitigation Strategies
+
+1. **Network Segmentation**:
+
+1. Divides network into security zones
+2. Limits lateral movement
+3. Reduces attack surface
+
+
+
+2. **Regular Patching**:
+
+1. Addresses known vulnerabilities
+2. Applies to all systems and devices
+3. Includes firmware, operating systems, and applications
+
+
+
+3. **Security Awareness Training**:
+
+1. Educates users about threats
+2. Teaches safe computing practices
+3. Reduces successful social engineering attacks
+
+
+
+4. **Incident Response Plan**:
+
+1. Defines procedures for security incidents
+2. Assigns responsibilities
+3. Includes communication and recovery strategies
+
+
+
+5. **Security Monitoring**:
+
+1. Continuous surveillance of network activity
+2. Identifies suspicious behavior
+3. Enables rapid response to threats
+
+
+
+
+
+## Access Controls
+
+Access controls restrict access to network resources, ensuring only authorized users and devices can connect and access specific resources.
+
+### Access Control Models
+
+1. **Discretionary Access Control (DAC)**:
+
+1. Resource owner determines access
+2. Flexible but potentially inconsistent
+3. Example: File permissions in Windows
+
+
+
+2. **Mandatory Access Control (MAC)**:
+
+1. System enforces policy based on sensitivity labels
+2. Rigid but highly secure
+3. Example: Military classification systems
+
+
+
+3. **Role-Based Access Control (RBAC)**:
+
+1. Access based on job functions or roles
+2. Simplifies administration
+3. Example: Administrator, operator, user roles
+
+
+
+4. **Attribute-Based Access Control (ABAC)**:
+
+1. Access based on attributes of user, resource, and environment
+2. Highly flexible and contextual
+3. Example: Access based on time, location, and security clearance
+
+
+
+
+
+### Network Access Control
+
+1. **802.1X**:
+
+1. Port-based network access control
+2. Authenticates devices before network access
+3. Components:
+
+1. **Supplicant**: Client requesting access
+2. **Authenticator**: Switch or access point
+3. **Authentication Server**: RADIUS or TACACS+
+
+
+
+
+
+
+
+
+```shellscript
+# Configure 802.1X on a switch port
+Switch(config)# aaa new-model
+Switch(config)# aaa authentication dot1x default group radius
+Switch(config)# radius-server host 10.1.1.1 key RadiusKey
+Switch(config)# dot1x system-auth-control
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# authentication port-control auto
+Switch(config-if)# dot1x pae authenticator
+```
+
+2. **Network Admission Control (NAC)**:
+
+1. Enforces policy compliance before network access
+2. Checks for antivirus, patches, and security settings
+3. Can quarantine non-compliant devices
+
+
+
+3. **MAC Authentication Bypass (MAB)**:
+
+1. Authenticates devices based on MAC address
+2. Used for devices that don't support 802.1X
+3. Less secure than 802.1X but better than no authentication
+
+
+
+
+
+```shellscript
+# Configure MAB on a switch port
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# authentication port-control auto
+Switch(config-if)# mab
+Switch(config-if)# authentication order dot1x mab
+Switch(config-if)# authentication priority dot1x mab
+```
+
+4. **Web Authentication**:
+
+1. Captive portal for user authentication
+2. Often used for guest networks
+3. Redirects HTTP requests to authentication page
+
+
+
+
+
+```shellscript
+# Configure Web Authentication on a switch
+Switch(config)# ip http server
+Switch(config)# ip http secure-server
+Switch(config)# ip admission name WEBAUTH proxy http
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# ip admission WEBAUTH
+```
+
+### Access Control Lists (ACLs)
+
+ACLs filter traffic based on defined criteria, controlling what traffic can pass through network devices.
+
+1. **Standard ACLs**:
+
+1. Filter based on source IP address only
+2. Applied close to destination
+
+
+
+
+
+```shellscript
+# Configure a standard ACL
+Router(config)# access-list 10 permit 192.168.1.0 0.0.0.255
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip access-group 10 in
+```
+
+2. **Extended ACLs**:
+
+1. Filter based on source/destination IP, protocol, and ports
+2. Applied close to source
+
+
+
+
+
+```shellscript
+# Configure an extended ACL
+Router(config)# access-list 101 permit tcp 192.168.1.0 0.0.0.255 any eq 80
+Router(config)# access-list 101 permit tcp 192.168.1.0 0.0.0.255 any eq 443
+Router(config)# access-list 101 deny ip any any
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip access-group 101 out
+```
+
+3. **Named ACLs**:
+
+1. Uses names instead of numbers
+2. Easier to manage and understand
+
+
+
+
+
+```shellscript
+# Configure a named ACL
+Router(config)# ip access-list extended WEB-TRAFFIC
+Router(config-ext-nacl)# permit tcp 192.168.1.0 0.0.0.255 any eq 80
+Router(config-ext-nacl)# permit tcp 192.168.1.0 0.0.0.255 any eq 443
+Router(config-ext-nacl)# deny ip any any
+Router(config-ext-nacl)# exit
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip access-group WEB-TRAFFIC out
+```
+
+4. **IPv6 ACLs**:
+
+1. Similar to IPv4 ACLs but for IPv6 traffic
+2. Always named, not numbered
+
+
+
+
+
+```shellscript
+# Configure an IPv6 ACL
+Router(config)# ipv6 access-list IPV6-TRAFFIC
+Router(config-ipv6-acl)# permit tcp 2001:db8:1::/64 any eq 80
+Router(config-ipv6-acl)# permit tcp 2001:db8:1::/64 any eq 443
+Router(config-ipv6-acl)# deny ipv6 any any
+Router(config-ipv6-acl)# exit
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ipv6 traffic-filter IPV6-TRAFFIC in
+```
+
+5. **VLAN ACLs (VACLs)**:
+
+1. Filter traffic within a VLAN
+2. Apply to all traffic in the VLAN, not just routed traffic
+
+
+
+
+
+```shellscript
+# Configure a VACL
+Switch(config)# vlan access-map VLAN-MAP 10
+Switch(config-access-map)# match ip address 101
+Switch(config-access-map)# action forward
+Switch(config-access-map)# exit
+Switch(config)# vlan access-map VLAN-MAP 20
+Switch(config-access-map)# match ip address 102
+Switch(config-access-map)# action drop
+Switch(config-access-map)# exit
+Switch(config)# vlan filter VLAN-MAP vlan-list 10
+```
+
+### Password Policies
+
+1. **Strong Password Requirements**:
+
+1. Minimum length (typically 8+ characters)
+2. Complexity (uppercase, lowercase, numbers, special characters)
+3. No common words or patterns
+4. Not based on personal information
+
+
+
+2. **Password Management**:
+
+1. Regular password changes
+2. Password history to prevent reuse
+3. Secure storage with encryption or hashing
+
+
+
+
+
+```shellscript
+# Configure password policies on Cisco devices
+Router(config)# security passwords min-length 8
+Router(config)# login block-for 120 attempts 3 within 60
+Router(config)# login delay 2
+```
+
+3. **Secure Password Storage**:
+
+1. Use strong hashing algorithms
+2. Avoid storing passwords in plaintext
+
+
+
+
+
+```shellscript
+# Configure secure password storage
+Router(config)# enable secret StrongPassword
+Router(config)# username admin secret StrongPassword
+Router(config)# service password-encryption
+```
+
+## Layer 2 Security
+
+Layer 2 security protects the data link layer of the network, preventing attacks that target switching infrastructure.
+
+### Port Security
+
+Port security limits the number of MAC addresses that can connect to a switch port, preventing unauthorized devices from accessing the network.
+
+1. **MAC Address Limiting**:
+
+1. Restricts number of MAC addresses per port
+2. Prevents MAC flooding attacks
+
+
+
+2. **MAC Address Binding**:
+
+1. Allows only specific MAC addresses on a port
+2. Prevents unauthorized device connections
+
+
+
+3. **Violation Modes**:
+
+1. **Protect**: Drops packets from unknown MAC addresses
+2. **Restrict**: Drops packets and generates SNMP trap
+3. **Shutdown**: Disables port (default)
+
+
+
+
+
+```shellscript
+# Configure basic port security
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport port-security
+Switch(config-if)# switchport port-security maximum 2
+Switch(config-if)# switchport port-security violation restrict
+
+# Configure port security with static MAC addresses
+Switch(config-if)# switchport port-security mac-address 0050.56BE.7CAD
+Switch(config-if)# switchport port-security mac-address sticky
+
+# Verify port security
+Switch# show port-security
+Switch# show port-security interface GigabitEthernet1/0/1
+```
+
+### DHCP Snooping
+
+DHCP snooping prevents rogue DHCP servers from distributing malicious network configuration.
+
+1. **Trusted vs. Untrusted Ports**:
+
+1. Trusted ports connect to legitimate DHCP servers
+2. Untrusted ports connect to end devices
+3. DHCP server messages only allowed from trusted ports
+
+
+
+2. **DHCP Snooping Binding Table**:
+
+1. Records legitimate DHCP leases
+2. Used by other security features like Dynamic ARP Inspection
+
+
+
+
+
+```shellscript
+# Configure DHCP snooping
+Switch(config)# ip dhcp snooping
+Switch(config)# ip dhcp snooping vlan 10,20
+Switch(config)# no ip dhcp snooping information option
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# ip dhcp snooping trust
+Switch(config-if)# exit
+Switch(config)# interface GigabitEthernet1/0/2
+Switch(config-if)# ip dhcp snooping limit rate 10
+
+# Verify DHCP snooping
+Switch# show ip dhcp snooping
+Switch# show ip dhcp snooping binding
+```
+
+### Dynamic ARP Inspection (DAI)
+
+DAI prevents ARP poisoning attacks by validating ARP packets against the DHCP snooping binding table.
+
+1. **ARP Packet Validation**:
+
+1. Verifies MAC-to-IP bindings
+2. Drops invalid ARP packets
+3. Requires DHCP snooping to be enabled
+
+
+
+2. **Static ARP ACLs**:
+
+1. Can be used for devices with static IP addresses
+2. Supplements DHCP snooping binding table
+
+
+
+
+
+```shellscript
+# Configure Dynamic ARP Inspection
+Switch(config)# ip arp inspection vlan 10,20
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# ip arp inspection trust
+Switch(config-if)# exit
+
+# Configure ARP ACL for static bindings
+Switch(config)# arp access-list STATIC-HOSTS
+Switch(config-arp-nacl)# permit ip host 192.168.1.100 mac host 0050.56BE.7CAD
+Switch(config-arp-nacl)# exit
+Switch(config)# ip arp inspection filter STATIC-HOSTS vlan 10
+
+# Verify DAI
+Switch# show ip arp inspection
+Switch# show ip arp inspection statistics
+```
+
+### IP Source Guard
+
+IP Source Guard prevents IP spoofing by filtering traffic based on the DHCP snooping binding table or static IP source bindings.
+
+1. **IP and MAC Filtering**:
+
+1. Restricts traffic based on source IP address
+2. Can also filter based on source MAC address
+3. Requires DHCP snooping to be enabled
+
+
+
+
+
+```shellscript
+# Configure IP Source Guard
+Switch(config)# interface GigabitEthernet1/0/2
+Switch(config-if)# ip verify source
+# Or to verify both IP and MAC
+Switch(config-if)# ip verify source port-security
+
+# Configure static IP source binding
+Switch(config)# ip source binding 0050.56BE.7CAD vlan 10 192.168.1.100 interface GigabitEthernet1/0/2
+
+# Verify IP Source Guard
+Switch# show ip verify source
+Switch# show ip source binding
+```
+
+### VLAN Security
+
+1. **Private VLANs**:
+
+1. Isolates ports within the same VLAN
+2. Types:
+
+1. **Primary**: Normal VLAN that can communicate with all ports
+2. **Isolated**: Ports can only communicate with promiscuous ports
+3. **Community**: Ports can communicate with each other and promiscuous ports
+
+
+
+
+
+
+
+
+```shellscript
+# Configure private VLANs
+Switch(config)# vlan 100
+Switch(config-vlan)# private-vlan primary
+Switch(config-vlan)# exit
+Switch(config)# vlan 101
+Switch(config-vlan)# private-vlan isolated
+Switch(config-vlan)# exit
+Switch(config)# vlan 102
+Switch(config-vlan)# private-vlan community
+Switch(config-vlan)# exit
+
+Switch(config)# vlan 100
+Switch(config-vlan)# private-vlan association 101-102
+Switch(config-vlan)# exit
+
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# switchport mode private-vlan promiscuous
+Switch(config-if)# switchport private-vlan mapping 100 101-102
+Switch(config-if)# exit
+
+Switch(config)# interface GigabitEthernet1/0/2
+Switch(config-if)# switchport mode private-vlan host
+Switch(config-if)# switchport private-vlan host-association 100 101
+```
+
+2. **VLAN Access Control**:
+
+1. Restrict VLAN trunking
+2. Disable unused ports and assign to unused VLAN
+3. Use explicit VLAN assignments
+
+
+
+
+
+```shellscript
+# Secure trunk ports
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# switchport mode trunk
+Switch(config-if)# switchport trunk allowed vlan 10,20,30
+Switch(config-if)# switchport nonegotiate
+
+# Secure unused ports
+Switch(config)# interface range GigabitEthernet1/0/10-24
+Switch(config-if-range)# switchport mode access
+Switch(config-if-range)# switchport access vlan 999
+Switch(config-if-range)# shutdown
+```
+
+3. **Native VLAN Security**:
+
+1. Change native VLAN from default (VLAN 1)
+2. Do not use native VLAN for user traffic
+3. Consider tagging native VLAN
+
+
+
+
+
+```shellscript
+# Secure native VLAN
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# switchport trunk native vlan 999
+Switch(config-if)# switchport trunk allowed vlan remove 1
+# For IOS that supports it
+Switch(config-if)# vlan dot1q tag native
+```
+
+### Spanning Tree Protocol Security
+
+1. **BPDU Guard**:
+
+1. Disables port if BPDU is received
+2. Prevents rogue switches from affecting STP topology
+3. Typically enabled on access ports with PortFast
+
+
+
+
+
+```shellscript
+# Configure BPDU Guard globally for all PortFast ports
+Switch(config)# spanning-tree portfast bpduguard default
+
+# Configure BPDU Guard on a specific interface
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# spanning-tree bpduguard enable
+```
+
+2. **Root Guard**:
+
+1. Prevents external switches from becoming root bridge
+2. Allows BPDUs but restricts port role
+3. Typically enabled on ports facing non-trusted switches
+
+
+
+
+
+```shellscript
+# Configure Root Guard
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# spanning-tree guard root
+```
+
+3. **Loop Guard**:
+
+1. Prevents loops caused by unidirectional link failures
+2. Blocks port if BPDUs stop being received
+3. Typically enabled on non-designated ports
+
+
+
+
+
+```shellscript
+# Configure Loop Guard globally
+Switch(config)# spanning-tree loopguard default
+
+# Configure Loop Guard on a specific interface
+Switch(config)# interface GigabitEthernet1/0/1
+Switch(config-if)# spanning-tree guard loop
+```
+
+## AAA (Authentication, Authorization, and Accounting)
+
+AAA provides a framework for controlling access to network resources, determining what users can do, and tracking their activities.
+
+### AAA Components
+
+1. **Authentication**:
+
+1. Verifies user identity
+2. Methods include username/password, certificates, tokens
+3. Can use local database or external servers
+
+
+
+2. **Authorization**:
+
+1. Determines what authenticated users can do
+2. Based on user identity, group membership, time of day, etc.
+3. Controls access to commands, services, and resources
+
+
+
+3. **Accounting**:
+
+1. Records user activities
+2. Provides audit trail for security and billing
+3. Tracks commands executed, resources accessed, session duration
+
+
+
+
+
+### AAA Protocols
+
+1. **RADIUS (Remote Authentication Dial-In User Service)**:
+
+1. Industry standard protocol (RFC 2865)
+2. Uses UDP (ports 1812/1813 or 1645/1646)
+3. Encrypts only password in authentication
+4. Combined authentication and authorization
+5. Widely used for network access
+
+
+
+2. **TACACS+ (Terminal Access Controller Access Control System Plus)**:
+
+1. Cisco proprietary protocol
+2. Uses TCP (port 49)
+3. Encrypts entire payload
+4. Separates authentication, authorization, and accounting
+5. Preferred for device administration
+
+
+
+3. **Comparison**:
+
+1. **Transport**: RADIUS uses UDP, TACACS+ uses TCP
+2. **Encryption**: RADIUS encrypts only password, TACACS+ encrypts entire session
+3. **AAA Functions**: RADIUS combines authentication and authorization, TACACS+ separates all three
+4. **Command Authorization**: TACACS+ supports per-command authorization, RADIUS does not
+5. **Standardization**: RADIUS is industry standard, TACACS+ is Cisco proprietary
+
+
+
+
+
+### AAA Configuration
+
+1. **Local AAA Configuration**:
+
+
+```shellscript
+# Enable AAA
+Router(config)# aaa new-model
+
+# Configure local users
+Router(config)# username admin privilege 15 secret StrongPassword
+Router(config)# username operator privilege 5 secret AnotherPassword
+
+# Configure authentication using local database
+Router(config)# aaa authentication login default local
+Router(config)# aaa authentication login CONSOLE local
+Router(config)# aaa authentication login VTY local
+
+# Apply authentication to lines
+Router(config)# line console 0
+Router(config-line)# login authentication CONSOLE
+Router(config-line)# exit
+Router(config)# line vty 0 4
+Router(config-line)# login authentication VTY
+```
+
+2. **RADIUS Configuration**:
+
+
+```shellscript
+# Configure RADIUS server
+Router(config)# radius-server host 10.1.1.1 auth-port 1812 acct-port 1813 key RadiusKey
+# Or for newer IOS versions
+Router(config)# radius server RADIUS-SERVER
+Router(config-radius-server)# address ipv4 10.1.1.1 auth-port 1812 acct-port 1813
+Router(config-radius-server)# key RadiusKey
+Router(config-radius-server)# exit
+
+# Configure AAA with RADIUS
+Router(config)# aaa authentication login default group radius local
+Router(config)# aaa authorization exec default group radius local
+Router(config)# aaa accounting exec default start-stop group radius
+```
+
+3. **TACACS+ Configuration**:
+
+
+```shellscript
+# Configure TACACS+ server
+Router(config)# tacacs-server host 10.1.1.2 key TacacsKey
+# Or for newer IOS versions
+Router(config)# tacacs server TACACS-SERVER
+Router(config-tacacs-server)# address ipv4 10.1.1.2
+Router(config-tacacs-server)# key TacacsKey
+Router(config-tacacs-server)# exit
+
+# Configure AAA with TACACS+
+Router(config)# aaa authentication login default group tacacs+ local
+Router(config)# aaa authorization exec default group tacacs+ local
+Router(config)# aaa authorization commands 15 default group tacacs+ local
+Router(config)# aaa accounting exec default start-stop group tacacs+
+Router(config)# aaa accounting commands 15 default start-stop group tacacs+
+```
+
+4. **Method Lists**:
+
+1. Define authentication, authorization, and accounting methods
+2. Can specify multiple methods in fallback order
+3. Applied to specific lines or interfaces
+
+
+
+
+
+```shellscript
+# Configure method lists
+Router(config)# aaa authentication login SSH-LOGIN group tacacs+ local
+Router(config)# aaa authentication login CONSOLE-LOGIN local
+Router(config)# aaa authorization exec SSH-EXEC group tacacs+ local
+Router(config)# aaa accounting exec SSH-ACCOUNTING start-stop group tacacs+
+
+# Apply method lists
+Router(config)# line vty 0 4
+Router(config-line)# login authentication SSH-LOGIN
+Router(config-line)# authorization exec SSH-EXEC
+Router(config-line)# accounting exec SSH-ACCOUNTING
+Router(config-line)# exit
+Router(config)# line console 0
+Router(config-line)# login authentication CONSOLE-LOGIN
+```
+
+### AAA Verification and Troubleshooting
+
+```shellscript
+# View AAA configuration
+Router# show running-config | include aaa
+Router# show aaa servers
+
+# View RADIUS configuration
+Router# show radius server-group all
+Router# show radius statistics
+
+# View TACACS+ configuration
+Router# show tacacs server-group all
+Router# show tacacs
+
+# Debug AAA operations
+Router# debug aaa authentication
+Router# debug aaa authorization
+Router# debug aaa accounting
+Router# debug radius
+Router# debug tacacs
+```
+
+### Common AAA Issues
+
+1. **Authentication Failures**:
+
+1. Incorrect credentials
+2. Server connectivity issues
+3. Mismatched shared secrets
+4. Protocol version incompatibilities
+
+
+
+2. **Authorization Issues**:
+
+1. Insufficient privileges
+2. Missing or incorrect authorization profiles
+3. Method list not applied correctly
+
+
+
+3. **Accounting Problems**:
+
+1. Server connectivity issues
+2. Disk space limitations on server
+3. Incorrect accounting configuration
+
+
+
+4. **Lockout Scenarios**:
+
+1. No fallback to local authentication
+2. Lost credentials for local accounts
+3. Always maintain console access with local authentication
+
+
+
+
+
+## Remote Access and Site-to-Site VPNs
+
+Virtual Private Networks (VPNs) provide secure connectivity over public networks by creating encrypted tunnels.
+
+### VPN Fundamentals
+
+1. **VPN Types**:
+
+1. **Remote Access VPN**: Connects individual users to a private network
+2. **Site-to-Site VPN**: Connects entire networks together
+3. **Extranet VPN**: Connects business partners with limited access
+
+
+
+2. **VPN Components**:
+
+1. **Tunnel**: Logical path through public network
+2. **Encryption**: Protects data confidentiality
+3. **Authentication**: Verifies identity of endpoints
+4. **Key Management**: Securely exchanges and updates encryption keys
+
+
+
+3. **VPN Protocols**:
+
+1. **IPsec (IP Security)**: Framework of protocols for secure IP communications
+2. **SSL/TLS (Secure Sockets Layer/Transport Layer Security)**: Used for clientless VPNs
+3. **L2TP (Layer 2 Tunneling Protocol)**: Often combined with IPsec
+4. **PPTP (Point-to-Point Tunneling Protocol)**: Older protocol with security limitations
+5. **GRE (Generic Routing Encapsulation)**: Simple tunneling protocol, often combined with IPsec
+
+
+
+
+
+### IPsec VPN
+
+IPsec provides a framework for secure IP communications by authenticating and encrypting each IP packet.
+
+1. **IPsec Protocols**:
+
+1. **Authentication Header (AH)**: Provides integrity and authentication (protocol 51)
+2. **Encapsulating Security Payload (ESP)**: Provides confidentiality, integrity, and authentication (protocol 50)
+3. **Internet Key Exchange (IKE)**: Negotiates security associations and keys (UDP port 500)
+
+
+
+2. **IPsec Modes**:
+
+1. **Transport Mode**: Protects payload of IP packet, original IP header preserved
+2. **Tunnel Mode**: Protects entire IP packet, encapsulated in new IP header
+
+
+
+3. **IPsec Phases**:
+
+1. **Phase 1 (IKE Phase 1)**: Establishes secure channel for Phase 2 negotiation
+
+1. **Main Mode**: Six messages, provides identity protection
+2. **Aggressive Mode**: Three messages, faster but less secure
+
+
+
+2. **Phase 2 (IKE Phase 2 / Quick Mode)**: Negotiates IPsec security associations
+
+
+
+4. **Security Associations (SAs)**:
+
+1. Unidirectional agreement between VPN peers
+2. Defines encryption algorithms, keys, and lifetimes
+3. Identified by Security Parameter Index (SPI)
+
+
+
+
+
+### Site-to-Site IPsec VPN Configuration
+
+```shellscript
+# Step 1: Configure ISAKMP (IKE) Phase 1
+Router(config)# crypto isakmp policy 10
+Router(config-isakmp)# encryption aes 256
+Router(config-isakmp)# hash sha
+Router(config-isakmp)# authentication pre-share
+Router(config-isakmp)# group 5
+Router(config-isakmp)# lifetime 86400
+Router(config-isakmp)# exit
+
+# Step 2: Configure pre-shared key
+Router(config)# crypto isakmp key StrongPreSharedKey address 203.0.113.2
+
+# Step 3: Configure IPsec transform set  crypto isakmp key StrongPreSharedKey address 203.0.113.2
+
+# Step 3: Configure IPsec transform set
+Router(config)# crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+Router(config-crypto-transform)# mode tunnel
+Router(config-crypto-transform)# exit
+
+# Step 4: Define interesting traffic (ACL)
+Router(config)# access-list 101 permit ip 192.168.1.0 0.0.0.255 192.168.2.0 0.0.0.255
+
+# Step 5: Create crypto map
+Router(config)# crypto map SITE-TO-SITE 10 ipsec-isakmp
+Router(config-crypto-map)# set peer 203.0.113.2
+Router(config-crypto-map)# set transform-set TS
+Router(config-crypto-map)# match address 101
+Router(config-crypto-map)# exit
+
+# Step 6: Apply crypto map to outbound interface
+Router(config)# interface GigabitEthernet0/1
+Router(config-if)# crypto map SITE-TO-SITE
+```
+
+### Remote Access IPsec VPN Configuration
+
+```shellscript
+# Step 1: Configure ISAKMP (IKE) Phase 1
+Router(config)# crypto isakmp policy 10
+Router(config-isakmp)# encryption aes 256
+Router(config-isakmp)# hash sha
+Router(config-isakmp)# authentication pre-share
+Router(config-isakmp)# group 5
+Router(config-isakmp)# lifetime 86400
+Router(config-isakmp)# exit
+
+# Step 2: Configure client group and pre-shared key
+Router(config)# crypto isakmp client configuration group REMOTE-USERS
+Router(config-isakmp-group)# key RemoteUserKey
+Router(config-isakmp-group)# pool VPN-POOL
+Router(config-isakmp-group)# acl 102
+Router(config-isakmp-group)# exit
+
+# Step 3: Configure IPsec transform set
+Router(config)# crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+Router(config-crypto-transform)# mode tunnel
+Router(config-crypto-transform)# exit
+
+# Step 4: Configure dynamic crypto map
+Router(config)# crypto dynamic-map DYNAMIC-MAP 10
+Router(config-crypto-map)# set transform-set TS
+Router(config-crypto-map)# reverse-route
+Router(config-crypto-map)# exit
+
+# Step 5: Create crypto map and apply dynamic map
+Router(config)# crypto map REMOTE-ACCESS 10 ipsec-isakmp dynamic DYNAMIC-MAP
+Router(config)# crypto map REMOTE-ACCESS client authentication list default
+Router(config)# crypto map REMOTE-ACCESS client configuration address respond
+
+# Step 6: Configure IP address pool
+Router(config)# ip local pool VPN-POOL 192.168.100.1 192.168.100.254
+
+# Step 7: Define interesting traffic (ACL)
+Router(config)# access-list 102 permit ip 192.168.1.0 0.0.0.255 192.168.100.0 0.0.0.255
+
+# Step 8: Apply crypto map to outbound interface
+Router(config)# interface GigabitEthernet0/1
+Router(config-if)# crypto map REMOTE-ACCESS
+```
+
+### SSL VPN Configuration
+
+SSL VPNs use the web browser as the client interface, providing clientless remote access.
+
+```shellscript
+# Step 1: Configure AAA
+Router(config)# aaa new-model
+Router(config)# aaa authentication login SSL-USERS local
+Router(config)# username admin secret StrongPassword
+
+# Step 2: Configure SSL VPN gateway
+Router(config)# crypto ssl trustpoint TP-SELF-SIGNED
+Router(config-trustpoint)# enrollment selfsigned
+Router(config-trustpoint)# subject-name CN=router.example.com
+Router(config-trustpoint)# revocation-check none
+Router(config-trustpoint)# rsakeypair TP-SELF-SIGNED
+Router(config-trustpoint)# exit
+Router(config)# crypto pki enroll TP-SELF-SIGNED
+
+Router(config)# webvpn gateway SSL-GATEWAY
+Router(config-webvpn-gateway)# ip address 203.0.113.1 port 443
+Router(config-webvpn-gateway)# ssl trustpoint TP-SELF-SIGNED
+Router(config-webvpn-gateway)# inservice
+Router(config-webvpn-gateway)# exit
+
+# Step 3: Configure SSL VPN context
+Router(config)# webvpn context SSL-CONTEXT
+Router(config-webvpn-context)# gateway SSL-GATEWAY
+Router(config-webvpn-context)# url-list "INTERNAL-SITES"
+Router(config-webvpn-url)# heading "Internal Websites"
+Router(config-webvpn-url)# url-text "Intranet" url-value "http://intranet.example.com"
+Router(config-webvpn-url)# url-text "Wiki" url-value "http://wiki.example.com"
+Router(config-webvpn-url)# exit
+Router(config-webvpn-context)# policy group SSL-POLICY
+Router(config-webvpn-group)# url-list "INTERNAL-SITES"
+Router(config-webvpn-group)# functions svc-enabled
+Router(config-webvpn-group)# svc address-pool "SSL-POOL"
+Router(config-webvpn-group)# svc keep-client-installed
+Router(config-webvpn-group)# exit
+Router(config-webvpn-context)# default-group-policy SSL-POLICY
+Router(config-webvpn-context)# aaa authentication list SSL-USERS
+Router(config-webvpn-context)# inservice
+Router(config-webvpn-context)# exit
+
+# Step 4: Configure IP address pool
+Router(config)# ip local pool SSL-POOL 192.168.200.1 192.168.200.254
+```
+
+### GRE over IPsec
+
+GRE (Generic Routing Encapsulation) tunnels encapsulate various network layer protocols inside IP tunnels. When combined with IPsec, they provide secure transport for routing protocols and multicast traffic.
+
+```shellscript
+# Step 1: Configure GRE tunnel
+Router(config)# interface Tunnel0
+Router(config-if)# ip address 10.0.0.1 255.255.255.0
+Router(config-if)# tunnel source GigabitEthernet0/1
+Router(config-if)# tunnel destination 203.0.113.2
+Router(config-if)# tunnel mode gre ip
+Router(config-if)# exit
+
+# Step 2: Configure routing over the tunnel
+Router(config)# router eigrp 100
+Router(config-router)# network 10.0.0.0 0.0.0.255
+Router(config-router)# network 192.168.1.0 0.0.0.255
+Router(config-router)# exit
+
+# Step 3: Configure IPsec to protect GRE tunnel
+Router(config)# crypto isakmp policy 10
+Router(config-isakmp)# encryption aes 256
+Router(config-isakmp)# hash sha
+Router(config-isakmp)# authentication pre-share
+Router(config-isakmp)# group 5
+Router(config-isakmp)# lifetime 86400
+Router(config-isakmp)# exit
+
+Router(config)# crypto isakmp key StrongPreSharedKey address 203.0.113.2
+
+Router(config)# crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+Router(config-crypto-transform)# mode transport
+Router(config-crypto-transform)# exit
+
+Router(config)# access-list 101 permit gre host 203.0.113.1 host 203.0.113.2
+
+Router(config)# crypto map GRE-IPSEC 10 ipsec-isakmp
+Router(config-crypto-map)# set peer 203.0.113.2
+Router(config-crypto-map)# set transform-set TS
+Router(config-crypto-map)# match address 101
+Router(config-crypto-map)# exit
+
+Router(config)# interface GigabitEthernet0/1
+Router(config-if)# crypto map GRE-IPSEC
+```
+
+### DMVPN (Dynamic Multipoint VPN)
+
+DMVPN combines GRE tunnels, IPsec encryption, and NHRP (Next Hop Resolution Protocol) to create a dynamic VPN that allows direct communication between sites without going through a hub.
+
+```shellscript
+# Step 1: Configure DMVPN hub
+Hub(config)# crypto isakmp policy 10
+Hub(config-isakmp)# encryption aes 256
+Hub(config-isakmp)# hash sha
+Hub(config-isakmp)# authentication pre-share
+Hub(config-isakmp)# group 5
+Hub(config-isakmp)# lifetime 86400
+Hub(config-isakmp)# exit
+
+Hub(config)# crypto isakmp key StrongPreSharedKey address 0.0.0.0 0.0.0.0
+
+Hub(config)# crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+Hub(config-crypto-transform)# mode transport
+Hub(config-crypto-transform)# exit
+
+Hub(config)# crypto ipsec profile DMVPN-PROFILE
+Hub(config-crypto-profile)# set transform-set TS
+Hub(config-crypto-profile)# exit
+
+Hub(config)# interface Tunnel0
+Hub(config-if)# ip address 10.0.0.1 255.255.255.0
+Hub(config-if)# no ip redirects
+Hub(config-if)# ip nhrp authentication NHRPKEY
+Hub(config-if)# ip nhrp map multicast dynamic
+Hub(config-if)# ip nhrp network-id 1
+Hub(config-if)# tunnel source GigabitEthernet0/1
+Hub(config-if)# tunnel mode gre multipoint
+Hub(config-if)# tunnel protection ipsec profile DMVPN-PROFILE
+Hub(config-if)# exit
+
+# Step 2: Configure DMVPN spoke
+Spoke(config)# crypto isakmp policy 10
+Spoke(config-isakmp)# encryption aes 256
+Spoke(config-isakmp)# hash sha
+Spoke(config-isakmp)# authentication pre-share
+Spoke(config-isakmp)# group 5
+Spoke(config-isakmp)# lifetime 86400
+Spoke(config-isakmp)# exit
+
+Spoke(config)# crypto isakmp key StrongPreSharedKey address 0.0.0.0 0.0.0.0
+
+Spoke(config)# crypto ipsec transform-set TS esp-aes 256 esp-sha-hmac
+Spoke(config-crypto-transform)# mode transport
+Spoke(config-crypto-transform)# exit
+
+Spoke(config)# crypto ipsec profile DMVPN-PROFILE
+Spoke(config-crypto-profile)# set transform-set TS
+Spoke(config-crypto-profile)# exit
+
+Spoke(config)# interface Tunnel0
+Spoke(config-if)# ip address 10.0.0.2 255.255.255.0
+Spoke(config-if)# no ip redirects
+Spoke(config-if)# ip nhrp authentication NHRPKEY
+Spoke(config-if)# ip nhrp map 10.0.0.1 203.0.113.1
+Spoke(config-if)# ip nhrp map multicast 203.0.113.1
+Spoke(config-if)# ip nhrp network-id 1
+Spoke(config-if)# ip nhrp nhs 10.0.0.1
+Spoke(config-if)# tunnel source GigabitEthernet0/1
+Spoke(config-if)# tunnel mode gre multipoint
+Spoke(config-if)# tunnel protection ipsec profile DMVPN-PROFILE
+Spoke(config-if)# exit
+```
+
+### VPN Verification and Troubleshooting
+
+```shellscript
+# Verify IPsec VPN status
+Router# show crypto isakmp sa
+Router# show crypto ipsec sa
+Router# show crypto map
+Router# show crypto session
+
+# Verify GRE tunnel status
+Router# show interfaces tunnel 0
+Router# show ip interface brief | include Tunnel
+
+# Verify DMVPN status
+Router# show dmvpn
+Router# show ip nhrp
+Router# show ip nhrp brief
+
+# Verify SSL VPN status
+Router# show webvpn gateway
+Router# show webvpn context
+Router# show webvpn session
+
+# Debug VPN operations
+Router# debug crypto isakmp
+Router# debug crypto ipsec
+Router# debug tunnel
+Router# debug nhrp
+```
+
+### Common VPN Issues
+
+1. **Phase 1 Negotiation Failures**:
+
+1. Mismatched ISAKMP policies
+2. Incorrect pre-shared keys
+3. NAT traversal issues
+4. Firewall blocking UDP 500/4500
+
+
+
+2. **Phase 2 Negotiation Failures**:
+
+1. Mismatched transform sets
+2. Incorrect ACLs for interesting traffic
+3. Routing issues
+
+
+
+3. **Tunnel Establishment Issues**:
+
+1. Incorrect peer addresses
+2. Interface or routing problems
+3. MTU/fragmentation issues
+
+
+
+4. **Performance Issues**:
+
+1. Encryption overhead
+2. Inadequate bandwidth
+3. Latency and jitter
+
+
+
+5. **Split Tunneling Concerns**:
+
+1. Security implications of allowing direct internet access
+2. Proper configuration of split tunneling policies
+
+
+
+
+
+## Conclusion
+
+This comprehensive guide covers the essential security topics for Week 7 of CCNA exam preparation. Understanding security fundamentals, common threats, access controls, Layer 2 security, AAA, and VPNs is crucial for designing, implementing, and maintaining secure networks.
+
+Remember to practice the commands and configurations provided in this guide. Hands-on experience is invaluable for mastering security concepts and troubleshooting skills.
+
+As you continue your CCNA preparation, focus on understanding the underlying principles rather than just memorizing commands. This approach will help you adapt to different scenarios and solve complex security problems.
+
+Good luck with your CCNA exam preparation!
