@@ -1,0 +1,1169 @@
+# CCNA Exam Preparation: Day 2
+
+## Network Addressing and Transport
+
+Network addressing is fundamental to how devices communicate across networks. Each layer of the OSI model has its own addressing scheme that serves a specific purpose in the communication process.
+
+### Addressing Overview
+
+1. **Layer 2 (Data Link Layer)**: MAC addresses identify devices on the same network segment.
+2. **Layer 3 (Network Layer)**: IP addresses identify devices across different networks.
+3. **Layer 4 (Transport Layer)**: Port numbers identify specific applications or services on a device.
+
+
+This hierarchical addressing system allows for efficient and targeted communication across complex networks.
+
+## Layer 2 Addressing
+
+Layer 2 addressing operates at the Data Link Layer of the OSI model and is primarily concerned with MAC (Media Access Control) addresses.
+
+### MAC Addresses
+
+A MAC address is a 48-bit (6-byte) physical address assigned to network interfaces by manufacturers.
+
+- **Format**: 12 hexadecimal digits, often written in pairs separated by colons or hyphens
+
+- Example: `00:1A:2B:3C:4D:5E` or `00-1A-2B-3C-4D-5E`
+
+
+
+- **Structure**:
+
+- First 6 digits (3 bytes): Organizationally Unique Identifier (OUI) assigned to the manufacturer
+- Last 6 digits (3 bytes): Unique identifier assigned by the manufacturer
+
+
+
+- **Types**:
+
+- **Unicast**: Identifies a specific interface (most common)
+- **Multicast**: Identifies a group of interfaces (starts with 01:00:5E for IPv4 multicast)
+- **Broadcast**: Identifies all interfaces on a network segment (FF:FF:FF:FF:FF:FF)
+
+
+
+
+
+### MAC Address Tables
+
+Switches use MAC address tables (also called CAM tables) to make forwarding decisions.
+
+- **Function**: Maps MAC addresses to switch ports
+- **Learning Process**: Switches learn MAC addresses by examining the source MAC address of incoming frames
+- **Aging**: MAC addresses are removed from the table after a period of inactivity (default is 300 seconds on Cisco switches)
+
+
+### Commands to View and Manage MAC Addresses
+
+```shellscript
+# View the MAC address of a router interface
+Router# show interfaces GigabitEthernet0/0
+Router# show interfaces GigabitEthernet0/0 | include address
+
+# View the MAC address table on a switch
+Switch# show mac address-table
+Switch# show mac address-table dynamic
+Switch# show mac address-table address 00:1A:2B:3C:4D:5E
+Switch# show mac address-table interface GigabitEthernet0/1
+Switch# show mac address-table vlan 10
+
+# Clear the MAC address table
+Switch# clear mac address-table dynamic
+
+# Configure MAC address aging time
+Switch(config)# mac address-table aging-time 600
+
+# Configure a static MAC address entry
+Switch(config)# mac address-table static 00:1A:2B:3C:4D:5E vlan 10 interface GigabitEthernet0/1
+```
+
+### MAC Address Security
+
+MAC address security features help protect against Layer 2 attacks.
+
+1. **Port Security**:
+
+1. Limits the number of MAC addresses allowed on a port
+2. Can be configured to take specific actions when violations occur
+
+
+
+
+
+```shellscript
+# Configure port security
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport port-security
+Switch(config-if)# switchport port-security maximum 2
+Switch(config-if)# switchport port-security mac-address sticky
+Switch(config-if)# switchport port-security violation shutdown
+
+# View port security status
+Switch# show port-security
+Switch# show port-security interface GigabitEthernet0/1
+```
+
+2. **DHCP Snooping**:
+
+1. Prevents rogue DHCP servers from operating on the network
+2. Creates a binding table of MAC addresses, IP addresses, and ports
+
+
+
+
+
+```shellscript
+# Configure DHCP snooping
+Switch(config)# ip dhcp snooping
+Switch(config)# ip dhcp snooping vlan 10,20
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# ip dhcp snooping trust
+Switch(config-if)# exit
+
+# View DHCP snooping status
+Switch# show ip dhcp snooping
+Switch# show ip dhcp snooping binding
+```
+
+3. **Dynamic ARP Inspection (DAI)**:
+
+1. Prevents ARP spoofing attacks
+2. Validates ARP packets against the DHCP snooping binding table
+
+
+
+
+
+```shellscript
+# Configure Dynamic ARP Inspection
+Switch(config)# ip arp inspection vlan 10,20
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# ip arp inspection trust
+Switch(config-if)# exit
+
+# View DAI status
+Switch# show ip arp inspection
+Switch# show ip arp inspection statistics
+```
+
+### ARP (Address Resolution Protocol)
+
+ARP resolves IP addresses to MAC addresses on IPv4 networks.
+
+- **Function**: Maps Layer 3 (IP) addresses to Layer 2 (MAC) addresses
+- **Process**:
+
+1. Device A wants to send data to IP address 192.168.1.10 but doesn't know the MAC address
+2. Device A sends an ARP broadcast asking "Who has 192.168.1.10?"
+3. Device B with IP 192.168.1.10 responds with its MAC address
+4. Device A caches the IP-to-MAC mapping in its ARP table
+
+
+
+- **ARP Table**: Contains mappings of IP addresses to MAC addresses
+
+
+```shellscript
+# View the ARP table
+Router# show ip arp
+Router# show arp
+
+# Clear the ARP table
+Router# clear arp-cache
+```
+
+### Layer 2 Frame Structure
+
+Understanding the structure of Ethernet frames is important for Layer 2 troubleshooting.
+
+- **Ethernet II Frame Format**:
+
+- **Preamble** (7 bytes): Synchronization pattern
+- **Start Frame Delimiter** (1 byte): Indicates the start of the frame
+- **Destination MAC Address** (6 bytes): MAC address of the destination device
+- **Source MAC Address** (6 bytes): MAC address of the source device
+- **Type/Length** (2 bytes): Indicates the protocol encapsulated in the frame or the length of the data
+- **Data** (46-1500 bytes): The actual data being transmitted
+- **Frame Check Sequence** (4 bytes): CRC for error detection
+
+
+
+
+
+### Layer 2 Troubleshooting
+
+Common Layer 2 issues and troubleshooting commands:
+
+1. **Duplex Mismatch**:
+
+1. **Symptoms**: Slow performance, CRC errors, late collisions
+2. **Commands**:
+
+```shellscript
+# Check interface duplex settings
+Switch# show interfaces GigabitEthernet0/1 | include duplex
+
+# Configure duplex settings
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# duplex full
+```
+
+
+
+
+
+2. **Speed Mismatch**:
+
+1. **Symptoms**: Interface flapping, no connectivity
+2. **Commands**:
+
+```shellscript
+# Check interface speed settings
+Switch# show interfaces GigabitEthernet0/1 | include [Ss]peed
+
+# Configure speed settings
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# speed 1000
+```
+
+
+
+
+
+3. **MAC Address Table Issues**:
+
+1. **Symptoms**: Flooding, intermittent connectivity
+2. **Commands**:
+
+```shellscript
+# Check MAC address table
+Switch# show mac address-table
+
+# Clear MAC address table
+Switch# clear mac address-table dynamic
+```
+
+
+
+
+
+4. **Spanning Tree Issues**:
+
+1. **Symptoms**: Network loops, intermittent connectivity
+2. **Commands**:
+
+```shellscript
+# Check spanning tree status
+Switch# show spanning-tree
+Switch# show spanning-tree vlan 10
+Switch# show spanning-tree interface GigabitEthernet0/1
+
+# Configure spanning tree
+Switch(config)# spanning-tree mode rapid-pvst
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# spanning-tree portfast
+```
+
+
+
+
+
+5. **VLAN Issues**:
+
+1. **Symptoms**: No connectivity between devices in the same VLAN
+2. **Commands**:
+
+```shellscript
+# Check VLAN configuration
+Switch# show vlan brief
+Switch# show interfaces GigabitEthernet0/1 switchport
+
+# Configure VLANs
+Switch(config)# vlan 10
+Switch(config-vlan)# name Data
+Switch(config-vlan)# exit
+Switch(config)# interface GigabitEthernet0/1
+Switch(config-if)# switchport mode access
+Switch(config-if)# switchport access vlan 10
+```
+
+
+
+
+
+
+
+## Layer 3 Addressing
+
+Layer 3 addressing operates at the Network Layer of the OSI model and is primarily concerned with IP addresses.
+
+### IPv4 Addressing
+
+IPv4 uses 32-bit addresses divided into four octets.
+
+- **Format**: Four decimal numbers (0-255) separated by dots
+
+- Example: `192.168.1.1`
+
+
+
+- **Structure**:
+
+- **Network Portion**: Identifies the network
+- **Host Portion**: Identifies a specific device on the network
+- The subnet mask determines which portion is network and which is host
+
+
+
+- **Classes of IPv4 Addresses**:
+
+- **Class A**: 1.0.0.0 to 126.255.255.255 (Default mask: 255.0.0.0 or /8)
+- **Class B**: 128.0.0.0 to 191.255.255.255 (Default mask: 255.255.0.0 or /16)
+- **Class C**: 192.0.0.0 to 223.255.255.255 (Default mask: 255.255.255.0 or /24)
+- **Class D**: 224.0.0.0 to 239.255.255.255 (Multicast)
+- **Class E**: 240.0.0.0 to 255.255.255.255 (Reserved)
+
+
+
+- **Special IPv4 Addresses**:
+
+- **Network Address**: All host bits are 0 (e.g., 192.168.1.0/24)
+- **Broadcast Address**: All host bits are 1 (e.g., 192.168.1.255/24)
+- **Loopback Address**: 127.0.0.1 (Used for testing the TCP/IP stack)
+- **Private Addresses**:
+
+- 10.0.0.0 to 10.255.255.255 (10.0.0.0/8)
+- 172.16.0.0 to 172.31.255.255 (172.16.0.0/12)
+- 192.168.0.0 to 192.168.255.255 (192.168.0.0/16)
+
+
+
+- **APIPA Addresses**: 169.254.0.0 to 169.254.255.255 (169.254.0.0/16)
+
+
+
+
+
+### Subnetting
+
+Subnetting divides a large network into smaller, more manageable subnets.
+
+- **Purpose**:
+
+- Reduces broadcast traffic
+- Improves security
+- Optimizes address utilization
+- Simplifies management
+
+
+
+- **Subnet Mask**:
+
+- Determines which portion of the IP address is network and which is host
+- Can be represented in dotted decimal (e.g., 255.255.255.0) or CIDR notation (e.g., /24)
+
+
+
+- **CIDR (Classless Inter-Domain Routing)**:
+
+- Notation that specifies the number of bits in the network portion
+- Example: 192.168.1.0/24 means the first 24 bits are the network portion
+
+
+
+- **Subnetting Calculations**:
+
+- **Number of Subnets**: 2^n (where n is the number of bits borrowed from the host portion)
+- **Number of Hosts per Subnet**: 2^m - 2 (where m is the number of bits in the host portion)
+- **Subnet Increment**: 256 - subnet mask octet value (for the octet where subnetting occurs)
+
+
+
+- **Subnetting Example**:
+
+- Given network: 192.168.1.0/24
+- Requirement: Create 4 subnets
+- Solution:
+
+- Need to borrow 2 bits from the host portion (2^2 = 4 subnets)
+- New subnet mask: 255.255.255.192 or /26
+- Subnet increment: 256 - 192 = 64
+- Subnets:
+
+- 192.168.1.0/26 (Hosts: 192.168.1.1 to 192.168.1.62, Broadcast: 192.168.1.63)
+- 192.168.1.64/26 (Hosts: 192.168.1.65 to 192.168.1.126, Broadcast: 192.168.1.127)
+- 192.168.1.128/26 (Hosts: 192.168.1.129 to 192.168.1.190, Broadcast: 192.168.1.191)
+- 192.168.1.192/26 (Hosts: 192.168.1.193 to 192.168.1.254, Broadcast: 192.168.1.255)
+
+
+
+
+
+
+
+
+
+
+
+### VLSM (Variable Length Subnet Mask)
+
+VLSM allows for more efficient use of IP addresses by using different subnet masks for different subnets.
+
+- **Purpose**:
+
+- Optimizes address utilization
+- Accommodates networks of different sizes
+
+
+
+- **VLSM Example**:
+
+- Given network: 192.168.1.0/24
+- Requirements:
+
+- Subnet 1: 100 hosts
+- Subnet 2: 50 hosts
+- Subnet 3: 25 hosts
+- Subnet 4: 10 hosts
+
+
+
+- Solution:
+
+- Subnet 1: 192.168.1.0/25 (126 hosts)
+- Subnet 2: 192.168.1.128/26 (62 hosts)
+- Subnet 3: 192.168.1.192/27 (30 hosts)
+- Subnet 4: 192.168.1.224/28 (14 hosts)
+
+
+
+
+
+
+
+
+### IPv4 Configuration Commands
+
+```shellscript
+# Configure an IPv4 address on an interface
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip address 192.168.1.1 255.255.255.0
+Router(config-if)# no shutdown
+
+# Configure a secondary IPv4 address
+Router(config-if)# ip address 192.168.2.1 255.255.255.0 secondary
+
+# Configure a DHCP client
+Router(config-if)# ip address dhcp
+
+# View IPv4 configuration
+Router# show ip interface brief
+Router# show ip interface GigabitEthernet0/0
+Router# show running-config interface GigabitEthernet0/0
+
+# Configure a static route
+Router(config)# ip route 192.168.2.0 255.255.255.0 192.168.1.2
+Router(config)# ip route 0.0.0.0 0.0.0.0 192.168.1.2  # Default route
+
+# Configure a DHCP server
+Router(config)# ip dhcp excluded-address 192.168.1.1 192.168.1.10
+Router(config)# ip dhcp pool LAN_POOL
+Router(dhcp-config)# network 192.168.1.0 255.255.255.0
+Router(dhcp-config)# default-router 192.168.1.1
+Router(dhcp-config)# dns-server 8.8.8.8 8.8.4.4
+Router(dhcp-config)# lease 7  # 7 days
+```
+
+### IPv6 Addressing
+
+IPv6 uses 128-bit addresses, providing a vastly larger address space than IPv4.
+
+- **Format**: Eight groups of four hexadecimal digits separated by colons
+
+- Example: `2001:0db8:85a3:0000:0000:8a2e:0370:7334`
+
+
+
+- **Shorthand Notation**:
+
+- Leading zeros in a group can be omitted: `2001:db8:85a3:0:0:8a2e:370:7334`
+- A single consecutive group of zeros can be replaced with `::`: `2001:db8:85a3::8a2e:370:7334`
+
+
+
+- **Types of IPv6 Addresses**:
+
+- **Global Unicast**: Public addresses routable on the internet (similar to public IPv4 addresses)
+
+- Example: `2001:db8::/32`
+
+
+
+- **Link-Local**: Addresses used only on a single link (not routable)
+
+- Format: `fe80::/10`
+- Automatically configured on interfaces
+
+
+
+- **Unique Local**: Private addresses (similar to private IPv4 addresses)
+
+- Format: `fc00::/7`
+
+
+
+- **Multicast**: Addresses for one-to-many communication
+
+- Format: `ff00::/8`
+
+
+
+- **Anycast**: Addresses assigned to multiple interfaces (packets are delivered to the nearest one)
+
+
+
+- **Special IPv6 Addresses**:
+
+- **Loopback**: `::1` (equivalent to 127.0.0.1 in IPv4)
+- **Unspecified**: `::` (used when an address is unknown)
+
+
+
+
+
+### IPv6 Subnetting
+
+IPv6 subnetting is simpler than IPv4 subnetting due to the abundance of addresses.
+
+- **Standard Allocation**:
+
+- `/48` for organizations
+- `/64` for individual subnets
+- `/128` for individual hosts
+
+
+
+- **Subnetting Example**:
+
+- Given prefix: `2001:db8:1234::/48`
+- Create 16 subnets
+- Solution:
+
+- Borrow 4 bits (2^4 = 16 subnets)
+- Subnets:
+
+- `2001:db8:1234:0000::/52`
+- `2001:db8:1234:1000::/52`
+- `2001:db8:1234:2000::/52`
+- ...
+- `2001:db8:1234:f000::/52`
+
+
+
+
+
+
+
+
+
+
+
+### IPv6 Configuration Commands
+
+```shellscript
+# Configure an IPv6 address on an interface
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ipv6 address 2001:db8:1234::1/64
+Router(config-if)# no shutdown
+
+# Configure IPv6 link-local address
+Router(config-if)# ipv6 address fe80::1 link-local
+
+# Enable IPv6 routing
+Router(config)# ipv6 unicast-routing
+
+# Configure IPv6 DHCP client
+Router(config-if)# ipv6 address dhcp
+
+# View IPv6 configuration
+Router# show ipv6 interface brief
+Router# show ipv6 interface GigabitEthernet0/0
+
+# Configure IPv6 static route
+Router(config)# ipv6 route 2001:db8:5678::/64 2001:db8:1234::2
+Router(config)# ipv6 route ::/0 2001:db8:1234::2  # Default route
+
+# Configure IPv6 DHCP server (stateless)
+Router(config)# ipv6 dhcp pool IPV6_POOL
+Router(config-dhcpv6)# dns-server 2001:4860:4860::8888
+Router(config-dhcpv6)# domain-name example.com
+Router(config-dhcpv6)# exit
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ipv6 nd other-config-flag
+Router(config-if)# ipv6 dhcp server IPV6_POOL
+
+# Configure IPv6 DHCP server (stateful)
+Router(config)# ipv6 dhcp pool IPV6_POOL
+Router(config-dhcpv6)# address prefix 2001:db8:1234::/64
+Router(config-dhcpv6)# dns-server 2001:4860:4860::8888
+Router(config-dhcpv6)# domain-name example.com
+Router(config-dhcpv6)# exit
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ipv6 nd managed-config-flag
+Router(config-if)# ipv6 dhcp server IPV6_POOL
+```
+
+## Understanding the Differences Between IPv4 and IPv6
+
+IPv4 and IPv6 have significant differences in addressing, header structure, and functionality.
+
+### Addressing Differences
+
+1. **Address Size**:
+
+1. IPv4: 32-bit addresses (4.3 billion addresses)
+2. IPv6: 128-bit addresses (340 undecillion addresses)
+
+
+
+2. **Notation**:
+
+1. IPv4: Dotted decimal (e.g., 192.168.1.1)
+2. IPv6: Hexadecimal with colons (e.g., 2001:db8::1)
+
+
+
+3. **Address Types**:
+
+1. IPv4: Unicast, multicast, broadcast
+2. IPv6: Unicast, multicast, anycast (no broadcast)
+
+
+
+4. **Address Configuration**:
+
+1. IPv4: Manual, DHCP
+2. IPv6: Manual, DHCPv6, SLAAC (Stateless Address Autoconfiguration)
+
+
+
+
+
+### Header Differences
+
+1. **Header Size**:
+
+1. IPv4: Variable (20-60 bytes)
+2. IPv6: Fixed (40 bytes)
+
+
+
+2. **Fields**:
+
+1. IPv4: 12 basic fields
+2. IPv6: 8 fields (simplified)
+
+
+
+3. **Checksum**:
+
+1. IPv4: Includes header checksum
+2. IPv6: No header checksum (relies on lower and upper layer checksums)
+
+
+
+4. **Fragmentation**:
+
+1. IPv4: Routers can fragment packets
+2. IPv6: Only source nodes can fragment packets
+
+
+
+
+
+### Functional Differences
+
+1. **NAT (Network Address Translation)**:
+
+1. IPv4: Commonly used due to address scarcity
+2. IPv6: Generally not needed due to abundant addresses
+
+
+
+2. **Security**:
+
+1. IPv4: Security was added later (IPsec is optional)
+2. IPv6: Security is built-in (IPsec is mandatory in the original specification, though now optional)
+
+
+
+3. **Quality of Service (QoS)**:
+
+1. IPv4: Uses Type of Service (ToS) field
+2. IPv6: Uses Traffic Class and Flow Label fields
+
+
+
+4. **Mobility**:
+
+1. IPv4: Limited support for mobile networks
+2. IPv6: Better support for mobile networks with Mobile IPv6
+
+
+
+
+
+### Transition Mechanisms
+
+Several mechanisms exist to facilitate the transition from IPv4 to IPv6:
+
+1. **Dual Stack**:
+
+1. Devices run both IPv4 and IPv6 simultaneously
+2. Most common transition mechanism
+
+
+
+
+
+```shellscript
+# Configure dual stack on an interface
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip address 192.168.1.1 255.255.255.0
+Router(config-if)# ipv6 address 2001:db8:1234::1/64
+Router(config-if)# no shutdown
+```
+
+2. **Tunneling**:
+
+1. Encapsulates IPv6 packets within IPv4 packets
+2. Types include:
+
+1. **6to4**: Automatic tunneling using 2002::/16 prefix
+2. **ISATAP**: Intra-Site Automatic Tunnel Addressing Protocol
+3. **Teredo**: Tunneling through NAT
+
+
+
+
+
+
+
+
+```shellscript
+# Configure a 6to4 tunnel
+Router(config)# interface Tunnel0
+Router(config-if)# ipv6 address 2002:c0a8:0101::1/64
+Router(config-if)# tunnel source GigabitEthernet0/0
+Router(config-if)# tunnel mode ipv6ip 6to4
+Router(config-if)# no shutdown
+```
+
+3. **Translation**:
+
+1. Converts IPv4 packets to IPv6 packets and vice versa
+2. Examples include NAT64 and DNS64
+
+
+
+
+
+```shellscript
+# Configure NAT64
+Router(config)# nat64 prefix 2001:db8:1::/96
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# nat64 enable
+```
+
+### IPv6 Neighbor Discovery Protocol (NDP)
+
+NDP replaces ARP in IPv6 networks and provides additional functionality.
+
+- **Functions**:
+
+- **Router Discovery**: Hosts discover routers on the link
+- **Prefix Discovery**: Hosts learn network prefixes
+- **Parameter Discovery**: Hosts learn link parameters (MTU, hop limit)
+- **Address Resolution**: Maps IPv6 addresses to MAC addresses (replaces ARP)
+- **Neighbor Unreachability Detection**: Verifies reachability of neighbors
+
+
+
+- **NDP Messages**:
+
+- **Router Solicitation (RS)**: Hosts request router information
+- **Router Advertisement (RA)**: Routers advertise their presence and link information
+- **Neighbor Solicitation (NS)**: Requests a neighbor's link-layer address
+- **Neighbor Advertisement (NA)**: Responds with link-layer address
+- **Redirect**: Informs hosts of better next-hop
+
+
+
+
+
+```shellscript
+# View IPv6 neighbors (similar to ARP table)
+Router# show ipv6 neighbors
+
+# Clear IPv6 neighbors
+Router# clear ipv6 neighbors
+
+# Configure IPv6 neighbor discovery
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ipv6 nd prefix 2001:db8:1234::/64
+Router(config-if)# ipv6 nd ra-interval 30
+Router(config-if)# ipv6 nd ra-lifetime 1800
+```
+
+## Layer 4 Addressing
+
+Layer 4 addressing operates at the Transport Layer of the OSI model and is primarily concerned with port numbers and sockets.
+
+### Port Numbers
+
+Port numbers identify specific applications or services on a device.
+
+- **Format**: 16-bit numbers (0-65535)
+
+- **Well-known Ports**: 0-1023 (assigned by IANA)
+- **Registered Ports**: 1024-49151 (registered with IANA)
+- **Dynamic/Private Ports**: 49152-65535 (used for temporary connections)
+
+
+
+- **Common Well-known Ports**:
+
+- **FTP**: 20 (data), 21 (control)
+- **SSH**: 22
+- **Telnet**: 23
+- **SMTP**: 25
+- **DNS**: 53
+- **DHCP**: 67 (server), 68 (client)
+- **HTTP**: 80
+- **POP3**: 110
+- **NTP**: 123
+- **IMAP**: 143
+- **HTTPS**: 443
+- **RDP**: 3389
+
+
+
+
+
+### Sockets
+
+A socket is a combination of an IP address and a port number, uniquely identifying a specific process on a specific device.
+
+- **Format**: IP_Address:Port_Number
+
+- Example: `192.168.1.1:80` or `[2001:db8::1]:80`
+
+
+
+- **Socket Pair**: A combination of source and destination sockets that uniquely identifies a connection
+
+- Example: `192.168.1.1:49152` to `203.0.113.1:80`
+
+
+
+
+
+### TCP (Transmission Control Protocol)
+
+TCP is a connection-oriented, reliable transport protocol.
+
+- **Characteristics**:
+
+- Connection-oriented
+- Reliable (guarantees delivery)
+- Flow control
+- Congestion control
+- Ordered delivery
+- Error detection and correction
+
+
+
+- **TCP Header**:
+
+- **Source Port** (16 bits): Port number of the sending application
+- **Destination Port** (16 bits): Port number of the receiving application
+- **Sequence Number** (32 bits): Identifies the position of the data in the stream
+- **Acknowledgment Number** (32 bits): Next expected sequence number
+- **Header Length** (4 bits): Size of the TCP header in 32-bit words
+- **Reserved** (6 bits): Reserved for future use
+- **Control Flags** (6 bits): URG, ACK, PSH, RST, SYN, FIN
+- **Window Size** (16 bits): Number of bytes the receiver is willing to accept
+- **Checksum** (16 bits): Error detection
+- **Urgent Pointer** (16 bits): Points to urgent data
+- **Options** (variable): Additional options
+- **Data** (variable): The actual data being transmitted
+
+
+
+- **TCP Connection Establishment (Three-way Handshake)**:
+
+1. Client sends SYN packet to server
+2. Server responds with SYN-ACK packet
+3. Client responds with ACK packet
+
+
+
+- **TCP Connection Termination (Four-way Handshake)**:
+
+1. Client sends FIN packet to server
+2. Server responds with ACK packet
+3. Server sends FIN packet to client
+4. Client responds with ACK packet
+
+
+
+
+
+### UDP (User Datagram Protocol)
+
+UDP is a connectionless, unreliable transport protocol.
+
+- **Characteristics**:
+
+- Connectionless
+- Unreliable (no guarantee of delivery)
+- No flow control
+- No congestion control
+- No ordered delivery
+- Minimal error detection
+
+
+
+- **UDP Header**:
+
+- **Source Port** (16 bits): Port number of the sending application
+- **Destination Port** (16 bits): Port number of the receiving application
+- **Length** (16 bits): Length of the UDP header and data
+- **Checksum** (16 bits): Error detection
+- **Data** (variable): The actual data being transmitted
+
+
+
+- **When to Use UDP**:
+
+- When speed is more important than reliability
+- For applications that handle reliability at the application layer
+- For broadcast or multicast transmissions
+- Examples: DNS, DHCP, SNMP, streaming media, VoIP
+
+
+
+
+
+### TCP vs. UDP
+
+| Feature | TCP | UDP
+|-----|-----|-----
+| Connection | Connection-oriented | Connectionless
+| Reliability | Reliable | Unreliable
+| Ordering | Ordered delivery | No ordering
+| Flow Control | Yes | No
+| Congestion Control | Yes | No
+| Error Detection | Yes | Yes (minimal)
+| Error Recovery | Yes | No
+| Header Size | 20-60 bytes | 8 bytes
+| Speed | Slower | Faster
+| Use Cases | Web browsing, email, file transfer | Streaming, DNS, DHCP
+
+
+### Layer 4 Configuration and Troubleshooting
+
+```shellscript
+# View active TCP connections
+Router# show tcp brief
+Router# show tcp brief all
+
+# View TCP parameters
+Router# show tcp parameters
+
+# View UDP connections
+Router# show udp
+
+# Configure TCP parameters
+Router(config)# ip tcp synwait-time 10
+Router(config)# ip tcp window-size 65535
+
+# Configure TCP MSS (Maximum Segment Size)
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip tcp adjust-mss 1400
+
+# Configure TCP keepalives
+Router(config)# service tcp-keepalives-in
+Router(config)# service tcp-keepalives-out
+
+# Configure access control lists for Layer 4
+Router(config)# access-list 101 permit tcp any any eq 80
+Router(config)# access-list 101 permit tcp any any eq 443
+Router(config)# access-list 101 deny tcp any any
+Router(config)# access-list 101 permit ip any any
+
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip access-group 101 in
+```
+
+### Common Layer 4 Issues and Troubleshooting
+
+1. **Port Filtering**:
+
+1. **Symptoms**: Unable to connect to specific services
+2. **Troubleshooting**:
+
+```shellscript
+# Check access lists
+Router# show access-lists
+Router# show ip interface GigabitEthernet0/0 | include access list
+
+# Test connectivity with specific ports
+Router# telnet 192.168.1.1 80
+```
+
+
+
+
+
+2. **Connection Timeouts**:
+
+1. **Symptoms**: Connections take a long time to establish or fail
+2. **Troubleshooting**:
+
+```shellscript
+# Check TCP parameters
+Router# show tcp parameters
+
+# Adjust TCP timeout values
+Router(config)# ip tcp synwait-time 5
+```
+
+
+
+
+
+3. **Maximum Segment Size (MSS) Issues**:
+
+1. **Symptoms**: TCP connections fail or perform poorly
+2. **Troubleshooting**:
+
+```shellscript
+# Check MSS settings
+Router# show interfaces GigabitEthernet0/0 | include mss
+
+# Adjust MSS
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip tcp adjust-mss 1400
+```
+
+
+
+
+
+4. **Port Exhaustion**:
+
+1. **Symptoms**: Unable to establish new connections
+2. **Troubleshooting**:
+
+```shellscript
+# Check active connections
+Router# show tcp brief all | count
+
+# Increase connection timeout values
+Router(config)# ip tcp window-size 65535
+```
+
+
+
+
+
+
+
+### Socket States
+
+Understanding socket states is important for troubleshooting Layer 4 issues.
+
+- **TCP Socket States**:
+
+- **LISTEN**: Server is waiting for connections
+- **SYN-SENT**: Client has sent a SYN packet
+- **SYN-RECEIVED**: Server has received a SYN and sent a SYN-ACK
+- **ESTABLISHED**: Connection is established
+- **FIN-WAIT-1**: Client has sent a FIN packet
+- **FIN-WAIT-2**: Client has received an ACK for its FIN
+- **CLOSE-WAIT**: Server has received a FIN from the client
+- **CLOSING**: Both sides have sent FIN packets
+- **LAST-ACK**: Server has sent a FIN packet
+- **TIME-WAIT**: Client is waiting for possible retransmissions
+- **CLOSED**: Connection is closed
+
+
+
+
+
+```shellscript
+# View TCP connection states
+Router# show tcp brief all
+```
+
+### NAT (Network Address Translation)
+
+NAT translates private IP addresses to public IP addresses, allowing multiple devices to share a single public IP.
+
+- **Types of NAT**:
+
+- **Static NAT**: One-to-one mapping of private to public addresses
+- **Dynamic NAT**: Many-to-many mapping from a pool of public addresses
+- **PAT (Port Address Translation)**: Many-to-one mapping using different port numbers
+
+
+
+- **NAT Configuration**:
+
+
+```shellscript
+# Configure PAT (most common)
+Router(config)# interface GigabitEthernet0/0
+Router(config-if)# ip nat inside
+Router(config-if)# exit
+
+Router(config)# interface GigabitEthernet0/1
+Router(config-if)# ip nat outside
+Router(config-if)# exit
+
+Router(config)# access-list 1 permit 192.168.1.0 0.0.0.255
+Router(config)# ip nat inside source list 1 interface GigabitEthernet0/1 overload
+
+# Configure static NAT
+Router(config)# ip nat inside source static 192.168.1.10 203.0.113.10
+
+# Configure dynamic NAT
+Router(config)# ip nat pool PUBLIC_POOL 203.0.113.20 203.0.113.30 netmask 255.255.255.0
+Router(config)# ip nat inside source list 1 pool PUBLIC_POOL
+
+# View NAT translations
+Router# show ip nat translations
+Router# show ip nat statistics
+```
+
+### Port Forwarding
+
+Port forwarding allows external devices to access services on internal devices.
+
+```shellscript
+# Configure port forwarding
+Router(config)# ip nat inside source static tcp 192.168.1.10 80 203.0.113.1 80
+Router(config)# ip nat inside source static tcp 192.168.1.20 22 203.0.113.1 2222
+```
+
+## Conclusion
+
+This comprehensive guide covers the essential topics for Week 2 of CCNA exam preparation, focusing on network addressing and transport. Understanding Layer 2 (MAC addresses), Layer 3 (IP addresses - both IPv4 and IPv6), and Layer 4 (ports and sockets) addressing is crucial for success in the CCNA exam and in real-world networking scenarios.
+
+Remember to practice the commands and configurations provided in this guide. Hands-on experience is invaluable for mastering networking concepts and troubleshooting skills.
+
+As you continue your CCNA preparation, focus on understanding the underlying principles rather than just memorizing commands. This approach will help you adapt to different scenarios and solve complex networking problems.
+
+Good luck with your CCNA exam preparation!
